@@ -45,9 +45,9 @@ class Ssh
 
         $target = "{$this->user}@{$this->host}";
 
-        $sshCommand = "ssh {$publicKey} $target 'bash -se' << \\$delimiter" . PHP_EOL
-            . $commandString . PHP_EOL
-            . $delimiter;
+        $sshCommand = "ssh {$publicKey} $target 'bash -se' << \\$delimiter".PHP_EOL
+            .$commandString.PHP_EOL
+            .$delimiter;
 
         return $sshCommand;
     }
