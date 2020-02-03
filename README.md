@@ -58,6 +58,24 @@ $process = (new Ssh('user', 'host'))->execute([
 ]);
 ```
 
+### Choosing a port
+
+You can choose a port by passing it to the constructor.
+
+
+```php
+$port = 123;
+
+(new Ssh('user', 'host', $port));
+```
+
+Alternatively you can use the `port` function:
+
+```php
+(new Ssh('user', 'host'))->usePort($port);
+```
+
+
 ### Specifying the public key to use
 
 You can use `usePublicKey` to specify a path to a public key to use.

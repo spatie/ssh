@@ -12,16 +12,27 @@ class Ssh
 
     private string $pathToPublicKey = '';
 
-    public function __construct(string $user, string $host)
+    private ?int $port;
+
+    public function __construct(string $user, string $host, int $port = null)
     {
         $this->user = $user;
 
         $this->host = $host;
+
+        $this->port = $port;
     }
 
     public function usePublicKey($pathToPublicKey): self
     {
         $this->pathToPublicKey = $pathToPublicKey;
+
+        return $this;
+    }
+
+    public function port(int $port): self
+    {
+        $this->port = $port;
 
         return $this;
     }
@@ -39,13 +50,17 @@ class Ssh
             ? ''
             : "-i {$this->pathToPublicKey}";
 
+        $port = $this->port === null
+            ? ''
+            : "-p {$this->port}";
+
         $commandString = implode(PHP_EOL, $commands);
 
         $delimiter = 'EOF-SPATIE-SSH';
 
         $target = "{$this->user}@{$this->host}";
 
-        $sshCommand = "ssh {$publicKey} $target 'bash -se' << \\$delimiter".PHP_EOL
+        $sshCommand = "ssh {$publicKey} {$port} $target 'bash -se' << \\$delimiter".PHP_EOL
             .$commandString.PHP_EOL
             .$delimiter;
 

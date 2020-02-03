@@ -42,4 +42,20 @@ class SshTest extends TestCase
 
         $this->assertMatchesSnapshot($command);
     }
+
+    /** @test */
+    public function it_can_set_the_port_via_the_constructor()
+    {
+        $command = (new Ssh('user', 'example.com', 123))->getSshCommand('whoami');
+
+        $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
+    public function it_can_set_the_port_via_the_dedicated_function()
+    {
+        $command = (new Ssh('user', 'example.com'))->port(123)->getSshCommand('whoami');
+
+        $this->assertMatchesSnapshot($command);
+    }
 }
