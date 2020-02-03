@@ -31,7 +31,23 @@ $process = (new Ssh('user', 'host'))->execute('your favorite command');
 
 It will return an instance of [Symfony's `Process`](https://symfony.com/doc/current/components/process.html).
 
-To check if your command ran ok with `$process->isSuccessfull()`. You can get the output with `$process->getOutput()`.
+### Getting the result of a command
+
+To check if your command ran ok
+
+```php
+$process->isSuccessfull();
+```
+
+
+This is how you can get the output
+
+```php
+$process->getOutput();
+```
+
+
+### Running multiple commands
 
 To run multiple commands pass an array to the execute method.
 
@@ -40,6 +56,14 @@ $process = (new Ssh('user', 'host'))->execute([
    'first command',
    'second command',
 ]);
+```
+
+### Specifying the public key to use
+
+You can use `usePublicKey` to specify a path to a public key to use.
+
+```php
+(new Ssh('user', 'host'))->usePublicKey('/home/user/.ssh/id_rsa');
 ```
 
 ### Testing
