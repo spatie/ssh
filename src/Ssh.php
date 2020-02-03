@@ -46,13 +46,7 @@ class Ssh
     {
         $commands = $this->wrapArray($command);
 
-        $publicKey = $this->pathToPublicKey === ''
-            ? ''
-            : "-i {$this->pathToPublicKey}";
-
-        $port = $this->port === null
-            ? ''
-            : "-p {$this->port}";
+        $extraOptions = $this->getExtraOptions();
 
         $commandString = implode(PHP_EOL, $commands);
 
@@ -60,7 +54,7 @@ class Ssh
 
         $target = "{$this->user}@{$this->host}";
 
-        $sshCommand = "ssh {$publicKey} {$port} $target 'bash -se' << \\$delimiter".PHP_EOL
+        $sshCommand = "ssh {$extraOptions} $target 'bash -se' << \\$delimiter".PHP_EOL
             .$commandString.PHP_EOL
             .$delimiter;
 
@@ -92,5 +86,20 @@ class Ssh
             : [$arrayOrString];
 
         return $array;
+    }
+
+    protected function getExtraOptions(): string
+    {
+        $extraOptions = [];
+
+        if ($this->pathToPublicKey) {
+            $extraOptions[] = "-i {$this->pathToPublicKey}";
+        }
+
+        if ($this->port) {
+            $extraOptions[] = "-p {$this->port}";
+        }
+
+        return implode(' ', $extraOptions);
     }
 }
