@@ -18,7 +18,7 @@
     "require": {
         "php": "^7.4",
         "spatie/phpunit-snapshot-assertions": "^3.1",
-        "symfony/process": "^5.0"
+        "symfony/process": "^4.3|^5.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.3",
