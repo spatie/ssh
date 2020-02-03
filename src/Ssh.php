@@ -54,11 +54,9 @@ class Ssh
 
         $target = "{$this->user}@{$this->host}";
 
-        $sshCommand = "ssh {$extraOptions} $target 'bash -se' << \\$delimiter".PHP_EOL
+        return "ssh {$extraOptions} $target 'bash -se' << \\$delimiter".PHP_EOL
             .$commandString.PHP_EOL
             .$delimiter;
-
-        return $sshCommand;
     }
 
     /**
@@ -81,11 +79,9 @@ class Ssh
 
     protected function wrapArray($arrayOrString): array
     {
-        $array = is_array($arrayOrString)
+        return is_array($arrayOrString)
             ? $arrayOrString
             : [$arrayOrString];
-
-        return $array;
     }
 
     protected function getExtraOptions(): string
