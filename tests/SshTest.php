@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace Spatie\Ssh\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -57,5 +57,11 @@ class SshTest extends TestCase
         $command = (new Ssh('user', 'example.com'))->usePort(123)->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
+    public function it_can_instantiate_via_the_create_method()
+    {
+        $this->assertInstanceOf(Ssh::class, Ssh::create('user', 'example.com'));
     }
 }
