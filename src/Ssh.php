@@ -79,9 +79,7 @@ class Ssh
 
     protected function wrapArray($arrayOrString): array
     {
-        return is_array($arrayOrString)
-            ? $arrayOrString
-            : [$arrayOrString];
+        return (array) $arrayOrString;
     }
 
     protected function getExtraOptions(): string
