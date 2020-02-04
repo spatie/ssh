@@ -23,6 +23,11 @@ class Ssh
         $this->port = $port;
     }
 
+    public static function create(...$args)
+    {
+        return new static(...$args);
+    }
+
     public function usePrivateKey(string $pathToPrivateKey): self
     {
         $this->pathToPrivateKey = $pathToPrivateKey;
