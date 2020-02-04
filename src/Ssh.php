@@ -23,7 +23,7 @@ class Ssh
         $this->port = $port;
     }
 
-    public static function create(...$args)
+    public static function create(...$args) : self
     {
         return new static(...$args);
     }
