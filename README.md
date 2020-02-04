@@ -69,7 +69,7 @@ $port = 123;
 Ssh::create('user', 'host', $port);
 ```
 
-Alternatively you can use the `port` function:
+Alternatively you can use the `usePort` function:
 
 ```php
 Ssh::create('user', 'host')->usePort($port);
