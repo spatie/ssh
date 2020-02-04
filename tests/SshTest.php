@@ -58,4 +58,10 @@ class SshTest extends TestCase
 
         $this->assertMatchesSnapshot($command);
     }
+
+    /** @test */
+    public function it_can_instantiate_via_the_create_method()
+    {
+        $this->assertInstanceOf(Ssh::class, Ssh::create('user', 'example.com'));
+    }
 }
