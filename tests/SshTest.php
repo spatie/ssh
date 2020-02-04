@@ -36,9 +36,9 @@ class SshTest extends TestCase
     }
 
     /** @test */
-    public function it_can_use_a_specific_public_key()
+    public function it_can_use_a_specific_private_key()
     {
-        $command = $this->ssh->usePublicKey('/home/user/.ssh/id_rsa')->getSshCommand('whoami');
+        $command = $this->ssh->usePrivateKey('/home/user/.ssh/id_rsa')->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }
