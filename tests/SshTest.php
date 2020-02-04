@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace Spatie\Ssh\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
