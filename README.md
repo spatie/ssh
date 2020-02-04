@@ -76,12 +76,12 @@ Alternatively you can use the `port` function:
 ```
 
 
-### Specifying the public key to use
+### Specifying the private key to use
 
-You can use `usePublicKey` to specify a path to a public key to use.
+You can use `usePrivateKey` to specify a path to a private SSH key to use.
 
 ```php
-(new Ssh('user', 'host'))->usePublicKey('/home/user/.ssh/id_rsa');
+(new Ssh('user', 'host'))->usePrivateKey('/home/user/.ssh/id_rsa');
 ```
 
 ### Testing
