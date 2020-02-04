@@ -30,7 +30,7 @@ class Ssh
         return $this;
     }
 
-    public function port(int $port): self
+    public function usePort(int $port): self
     {
         $this->port = $port;
 
