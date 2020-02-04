@@ -8,7 +8,7 @@
 You can execute an SSH command like this:
 
 ```php
-(new Ssh('user', 'host'))->execute('your favorite command');
+Ssh::create('user', 'host')->execute('your favorite command');
 ```
 
 It will return an instance of [Symfony's `Process`](https://symfony.com/doc/current/components/process.html).
@@ -26,7 +26,7 @@ composer require spatie/ssh
 You can execute an SSH command like this:
 
 ```php
-$process = (new Ssh('user', 'host'))->execute('your favorite command');
+$process = Ssh::create('user', 'host')->execute('your favorite command');
 ```
 
 It will return an instance of [Symfony's `Process`](https://symfony.com/doc/current/components/process.html).
@@ -52,7 +52,7 @@ $process->getOutput();
 To run multiple commands pass an array to the execute method.
 
 ```php
-$process = (new Ssh('user', 'host'))->execute([
+$process = Ssh::create('user', 'host')->execute([
    'first command',
    'second command',
 ]);
@@ -66,13 +66,13 @@ You can choose a port by passing it to the constructor.
 ```php
 $port = 123;
 
-(new Ssh('user', 'host', $port));
+Ssh::create('user', 'host', $port);
 ```
 
 Alternatively you can use the `port` function:
 
 ```php
-(new Ssh('user', 'host'))->usePort($port);
+Ssh::create('user', 'host')->usePort($port);
 ```
 
 
@@ -81,7 +81,7 @@ Alternatively you can use the `port` function:
 You can use `usePrivateKey` to specify a path to a private SSH key to use.
 
 ```php
-(new Ssh('user', 'host'))->usePrivateKey('/home/user/.ssh/id_rsa');
+Ssh::create('user', 'host')->usePrivateKey('/home/user/.ssh/id_rsa');
 ```
 
 ### Testing
