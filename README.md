@@ -42,7 +42,7 @@ It will return an instance of [Symfony's `Process`](https://symfony.com/doc/curr
 To check if your command ran ok
 
 ```php
-$process->isSuccessfull();
+$process->isSuccessful();
 ```
 
 
