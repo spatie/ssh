@@ -10,7 +10,7 @@ class Ssh
 
     private string $host;
 
-    private string $pathToPublicKey = '';
+    private string $pathToPrivateKey = '';
 
     private ?int $port;
 
@@ -23,9 +23,9 @@ class Ssh
         $this->port = $port;
     }
 
-    public function usePublicKey($pathToPublicKey): self
+    public function usePrivateKey(string $pathToPrivateKey): self
     {
-        $this->pathToPublicKey = $pathToPublicKey;
+        $this->pathToPrivateKey = $pathToPrivateKey;
 
         return $this;
     }
@@ -88,8 +88,8 @@ class Ssh
     {
         $extraOptions = [];
 
-        if ($this->pathToPublicKey) {
-            $extraOptions[] = "-i {$this->pathToPublicKey}";
+        if ($this->pathToPrivateKey) {
+            $extraOptions[] = "-i {$this->pathToPrivateKey}";
         }
 
         if ($this->port) {
