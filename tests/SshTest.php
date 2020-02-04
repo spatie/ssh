@@ -36,9 +36,9 @@ class SshTest extends TestCase
     }
 
     /** @test */
-    public function it_can_use_a_specific_public_key()
+    public function it_can_use_a_specific_private_key()
     {
-        $command = $this->ssh->usePublicKey('/home/user/.ssh/id_rsa')->getSshCommand('whoami');
+        $command = $this->ssh->usePrivateKey('/home/user/.ssh/id_rsa')->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }
@@ -54,7 +54,7 @@ class SshTest extends TestCase
     /** @test */
     public function it_can_set_the_port_via_the_dedicated_function()
     {
-        $command = (new Ssh('user', 'example.com'))->port(123)->getSshCommand('whoami');
+        $command = (new Ssh('user', 'example.com'))->usePort(123)->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }
