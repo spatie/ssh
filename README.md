@@ -108,6 +108,10 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
 
+## Alternatives
+
+  If you need some more features, take a look at [DivineOmega/php-ssh-connection](https://github.com/DivineOmega/php-ssh-connection).
+
 ## Credits
 
 - [Freek Van der Herten](https://github.com/freekmurze)
