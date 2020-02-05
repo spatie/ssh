@@ -17,12 +17,15 @@
     ],
     "require": {
         "php": "^7.4",
-        "symfony/process": "^4.3|^5.0"
+        "symfony/process": "^4.3 || ^5.0"
     },
     "require-dev": {
+        "phpunit/phpunit": "^8.2",
         "spatie/phpunit-snapshot-assertions": "^3.1",
-        "symfony/var-dumper": "^4.3",
-        "phpunit/phpunit": "^8.2"
+        "symfony/var-dumper": "^4.3"
+    },
+    "config": {
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
@@ -37,8 +40,5 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-    },
-    "config": {
-        "sort-packages": true
     }
 }
