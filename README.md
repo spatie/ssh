@@ -116,6 +116,10 @@ Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
 
 We publish all received postcards [on our company website](https://spatie.be/en/opensource/postcards).
 
+## Alternatives
+
+If you need some more features, take a look at [DivineOmega/php-ssh-connection](https://github.com/DivineOmega/php-ssh-connection).
+
 ## Credits
 
 - [Freek Van der Herten](https://github.com/freekmurze)
