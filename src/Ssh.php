@@ -112,7 +112,7 @@ class Ssh
             $extraOptions[] = '-o StrictHostKeyChecking=no';
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
         } else {
-            $extraOptions[] = '-o UserKnownHostsFile=' .
+            $extraOptions[] = '-o UserKnownHostsFile='.
                 (new SshKeyScan($this->host, $this->port))
                     ->getResultAsFilePath();
         }

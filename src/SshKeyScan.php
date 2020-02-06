@@ -6,10 +6,6 @@ use InvalidArgumentException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-/**
- * Class SshKeyScan
- * @package Spatie\Ssh
- */
 class SshKeyScan
 {
     private string $sshPort = '22';
@@ -41,7 +37,7 @@ class SshKeyScan
      */
     public function __construct(string $hostAddress, ?string $sshPort = '22', ?string $keyType = 'rsa')
     {
-        if (!$this->systemHasCapability()) {
+        if (! $this->systemHasCapability()) {
             throw new InvalidArgumentException('Could not execute ssh-keyscan on host filesystem');
         }
 
@@ -107,6 +103,7 @@ class SshKeyScan
         }
 
         $this->path = trim($which->getOutput());
+
         return true;
     }
 }
