@@ -16,6 +16,8 @@ class Ssh
 
     private bool $enableStrictHostChecking = true;
 
+    private ?string $customKnownHostsFileLocation = null;
+
     public function __construct(string $user, string $host, int $port = null)
     {
         $this->user = $user;
@@ -47,6 +49,13 @@ class Ssh
     public function disableStrictHostKeyChecking(): self
     {
         $this->enableStrictHostChecking = false;
+
+        return $this;
+    }
+
+    public function useCustomKnownHostsFileLocation($path): self
+    {
+        $this->customKnownHostsFileLocation = $path;
 
         return $this;
     }
@@ -113,7 +122,7 @@ class Ssh
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
         } else {
             $extraOptions[] = '-o UserKnownHostsFile='.
-                (new SshKeyScan($this->host, $this->port))
+                (new SshKeyScan($this->host, $this->port, $this->customKnownHostsFileLocation))
                     ->getResultAsFilePath();
         }
 
