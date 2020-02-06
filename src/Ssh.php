@@ -91,7 +91,7 @@ class Ssh
     {
         $extraOptions = [
             "-o StrictHostKeyChecking=no",
-            " -o UserKnownHostsFile=/dev/null"
+            "-o UserKnownHostsFile=/dev/null",
         ];
 
         if ($this->pathToPrivateKey) {
