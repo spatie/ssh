@@ -53,7 +53,7 @@ class Ssh
         return $this;
     }
 
-    public function useCustomKnownHostsFileLocation($path): self
+    public function useCustomKnownHostsFileLocation(string $path): self
     {
         $this->customKnownHostsFileLocation = $path;
 
