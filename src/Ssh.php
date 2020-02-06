@@ -109,8 +109,8 @@ class Ssh
         }
 
         if (! $this->enableStrictHostChecking) {
-            $extraOptions[] = "-o StrictHostKeyChecking=no";
-            $extraOptions[] = "-o UserKnownHostsFile=/dev/null";
+            $extraOptions[] = '-o StrictHostKeyChecking=no';
+            $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
         }
 
         return implode(' ', $extraOptions);
