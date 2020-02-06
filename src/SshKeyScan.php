@@ -20,7 +20,7 @@ class SshKeyScan
     {
         $this->filePath = $filePath;
 
-        if (!$this->ensureCanRunSshKeyscan()) {
+        if (! $this->ensureCanRunSshKeyscan()) {
             throw new InvalidArgumentException('Could not execute ssh-keyscan on host filesystem');
         }
 
@@ -29,7 +29,7 @@ class SshKeyScan
             ...$this->getSshPort($sshPort),
             '-H',
             ...$this->getKeyType($keyType),
-            $hostAddress
+            $hostAddress,
         ]);
 
         $keyscan->run();
@@ -50,6 +50,7 @@ class SshKeyScan
 
         if ($which->isSuccessful()) {
             $this->path = trim($which->getOutput());
+
             return true;
         }
 
@@ -61,6 +62,7 @@ class SshKeyScan
         if (null !== $sshPort) {
             $port = ['-p', $sshPort];
         }
+
         return $port;
     }
 
@@ -69,6 +71,7 @@ class SshKeyScan
         if (null !== $keyType) {
             $type = ['-t', $keyType];
         }
+
         return $type;
     }
 
