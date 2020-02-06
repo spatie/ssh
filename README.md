@@ -92,10 +92,21 @@ Ssh::create('user', 'host')->usePrivateKey('/home/user/.ssh/id_rsa');
 
 ### Strict host key checking
 
-By default, strict host key checking is disabled. If you need more security you can enable strict host key checking using `enableStrictHostKeyChecking`.
+By default, strict host key checking is enabled.
+
+The host key is obtained, prior to the SSH connection, by finding and running the `ssh-keyscan` utility.
+
+For more information about `ssh-keyscan`, use the `man` pages on your host system or see:
+* https://man.openbsd.org/ssh-keyscan (BSD verions)
+* https://linux.die.net/man/1/ssh-keyscan (GNU Linux versions)
+
+Warning: you will not be prompted to accept the key of the host system, it will automatically be accepted.
+You will thus lose the design feature of SSH where a new key indicates the host system has changed.
+
+To disable strict host key checking altogether, use `disableStrictHostKeyChecking`
 
 ```php
-Ssh::create('user', 'host')->enableStrictHostKeyChecking();
+Ssh::create('user', 'host')->disableStrictHostKeyChecking();
 ```
 
 ## Testing
