@@ -89,7 +89,10 @@ class Ssh
 
     protected function getExtraOptions(): string
     {
-        $extraOptions = [];
+        $extraOptions = [
+            "-o StrictHostKeyChecking=no",
+            " -o UserKnownHostsFile=/dev/null"
+        ];
 
         if ($this->pathToPrivateKey) {
             $extraOptions[] = "-i {$this->pathToPrivateKey}";
