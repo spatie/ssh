@@ -7,82 +7,49 @@ use Symfony\Component\Process\Process;
 
 class SshKeyScan
 {
-    private string $path;
-    private string $result;
-    private string $tmpFilePath;
-    private ?string $filePath;
-
-    public function __construct(string $hostAddress, ?string $sshPort = '22', ?string $filePath = null, ?string $keyType = 'rsa')
+    public function getKnownHostFilePath(string $hostAddress, ?string $sshPort, ?string $filePath, string $keyType = 'rsa'): string
     {
-        $this->filePath = $filePath;
+        $filePath = $filePath ?? stream_get_meta_data(tmpfile())['uri'];
 
-        if (! $this->ensureCanRunSshKeyscan()) {
-            throw new InvalidArgumentException('Could not execute ssh-keyscan on host filesystem');
-        }
-
-        $keyscan = new Process([
-            $this->path,
+        $process = new Process([
+            $this->getSshKeyscanPath(),
             ...$this->getSshPort($sshPort),
             '-H',
-            ...$this->getKeyType($keyType),
+            '-t',
+            $keyType,
             $hostAddress,
         ]);
 
-        $keyscan->run();
+        $process->run();
 
-        if ($keyscan->isSuccessful()) {
-            $this->result = trim($keyscan->getOutput());
-            $this->writeContentsToTemporaryFile($filePath);
-        } else {
+        if (!$process->isSuccessful()) {
             throw new InvalidArgumentException('Could not obtain host keys with ssh-keyscan');
         }
+
+        $result = trim($process->getOutput());
+
+        file_put_contents($filePath, $result);
+
+        return $filePath;
     }
 
-    public function ensureCanRunSshKeyscan(): bool
+    public function getSshKeyscanPath(): string
     {
-        $which = new Process(['which', 'ssh-keyscan']);
+        $process = new Process(['which', 'ssh-keyscan']);
 
-        $which->run();
+        $process->run();
 
-        if ($which->isSuccessful()) {
-            $this->path = trim($which->getOutput());
-
-            return true;
+        if (!$process->isSuccessful()) {
+            throw new InvalidArgumentException('Could not execute ssh-keyscan on host filesystem');
         }
 
-        return false;
+        return trim($process->getOutput());
     }
 
-    protected function getSshPort(?string $sshPort, array $port = []): array
+    protected function getSshPort(?string $sshPort): array
     {
-        if (null !== $sshPort) {
-            $port = ['-p', $sshPort];
-        }
-
-        return $port;
-    }
-
-    protected function getKeyType(?string $keyType, array $type = []): array
-    {
-        if (null !== $keyType) {
-            $type = ['-t', $keyType];
-        }
-
-        return $type;
-    }
-
-    protected function writeContentsToTemporaryFile(?string $customPath): void
-    {
-        if (null !== $customPath) {
-            file_put_contents($customPath, $this->result);
-        } else {
-            $this->tmpFilePath = stream_get_meta_data(tmpfile())['uri'];
-            file_put_contents($this->tmpFilePath, $this->result);
-        }
-    }
-
-    public function getResultAsFilePath(): string
-    {
-        return $this->filePath ?? $this->tmpFilePath;
+        return is_null($sshPort)
+            ? []
+            : ['-p', $sshPort];
     }
 }

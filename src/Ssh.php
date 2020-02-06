@@ -117,13 +117,14 @@ class Ssh
             $extraOptions[] = "-p {$this->port}";
         }
 
-        if (! $this->enableStrictHostChecking) {
+        if ($this->enableStrictHostChecking) {
+            $knownHostsFilePath = (new SshKeyScan())->getKnownHostFilePath($this->host, $this->port, $this->customKnownHostsFileLocation, 'rsa');
+
+            $extraOptions[] = "-o UserKnownHostsFile={$knownHostsFilePath}";
+
+        } else {
             $extraOptions[] = '-o StrictHostKeyChecking=no';
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
-        } else {
-            $extraOptions[] = '-o UserKnownHostsFile='.
-                (new SshKeyScan($this->host, $this->port, $this->customKnownHostsFileLocation))
-                    ->getResultAsFilePath();
         }
 
         return implode(' ', $extraOptions);
