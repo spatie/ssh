@@ -14,6 +14,8 @@ class Ssh
 
     private ?int $port;
 
+    private bool $enableStrictHostChecking = false;
+
     public function __construct(string $user, string $host, int $port = null)
     {
         $this->user = $user;
@@ -38,6 +40,13 @@ class Ssh
     public function usePort(int $port): self
     {
         $this->port = $port;
+
+        return $this;
+    }
+
+    public function enableStrictHostKeyChecking()
+    {
+        $this->enableStrictHostChecking = true;
 
         return $this;
     }
@@ -97,6 +106,11 @@ class Ssh
 
         if ($this->port) {
             $extraOptions[] = "-p {$this->port}";
+        }
+
+        if (! $this->enableStrictHostChecking) {
+            $extraOptions[] = '-o StrictHostKeyChecking=no';
+            $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
         }
 
         return implode(' ', $extraOptions);

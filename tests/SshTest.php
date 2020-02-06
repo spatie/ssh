@@ -64,4 +64,12 @@ class SshTest extends TestCase
     {
         $this->assertInstanceOf(Ssh::class, Ssh::create('user', 'example.com'));
     }
+
+    /** @test */
+    public function it_can_enable_strict_host_checking()
+    {
+        $command = (new Ssh('user', 'example.com'))->enableStrictHostKeyChecking()->getSshCommand('woami');
+
+        $this->assertMatchesSnapshot($command);
+    }
 }
