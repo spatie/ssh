@@ -44,7 +44,7 @@ class Ssh
         return $this;
     }
 
-    public function enableStrictHostKeyChecking()
+    public function enableStrictHostKeyChecking(): self
     {
         $this->enableStrictHostChecking = true;
 
