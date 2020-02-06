@@ -15,7 +15,7 @@ class SshKeyScan
     /**
      * @var string
      */
-    private string $path;
+    private $path;
     /**
      * @var string
      */
@@ -27,7 +27,7 @@ class SshKeyScan
     /**
      * @var string
      */
-    private string $tmpFilePath;
+    private $tmpFilePath;
 
     /**
      * SshKeyScan constructor.
