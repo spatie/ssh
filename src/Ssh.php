@@ -68,9 +68,9 @@ class Ssh
 
         $target = "{$this->user}@{$this->host}";
 
-        return "ssh {$extraOptions} $target 'bash -se' << \\$delimiter" . PHP_EOL
-            . $commandString . PHP_EOL
-            . $delimiter;
+        return "ssh {$extraOptions} $target 'bash -se' << \\$delimiter".PHP_EOL
+            .$commandString.PHP_EOL
+            .$delimiter;
     }
 
     /**
@@ -93,7 +93,7 @@ class Ssh
 
     protected function wrapArray($arrayOrString): array
     {
-        return (array)$arrayOrString;
+        return (array) $arrayOrString;
     }
 
     protected function getExtraOptions(): string
@@ -108,7 +108,7 @@ class Ssh
             $extraOptions[] = "-p {$this->port}";
         }
 
-        if (!$this->enableStrictHostChecking) {
+        if (! $this->enableStrictHostChecking) {
             $extraOptions[] = '-o StrictHostKeyChecking=no';
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
         } else {
