@@ -68,7 +68,7 @@ class SshTest extends TestCase
     /** @test */
     public function it_can_enable_strict_host_checking()
     {
-        $command = (new Ssh('user', 'example.com'))->enableStrictHostKeyChecking()->getSshCommand('woami');
+        $command = (new Ssh('user', 'example.com'))->enableStrictHostKeyChecking()->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }
