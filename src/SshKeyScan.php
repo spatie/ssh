@@ -12,6 +12,9 @@ use Symfony\Component\Process\Process;
  */
 class SshKeyScan
 {
+    private string $sshPort = '22';
+
+    private string $keyType = 'rsa';
     /**
      * @var string
      */
@@ -36,18 +39,30 @@ class SshKeyScan
      * @param string $keyType
      * @throws InvalidArgumentException
      */
-    public function __construct(string $hostAddress, $sshPort = '22', $keyType = 'rsa')
+    public function __construct(string $hostAddress, ?string $sshPort = '22', ?string $keyType = 'rsa')
     {
         if (!$this->systemHasCapability()) {
             throw new InvalidArgumentException('Could not execute ssh-keyscan on host filesystem');
         }
 
-        $keyscan = new Process([$this->path, '-p', (string)$sshPort, '-H', '-t', $keyType, $hostAddress]);
+        $port = [];
+        if (null !== $sshPort) {
+            $port = ['-p', $sshPort];
+        }
+
+        $type = [];
+        if (null !== $keyType) {
+            $type = ['-t', $keyType];
+        }
+
+        $keyscan = new Process([$this->path, ...$port, '-H', ...$type, $hostAddress]);
         $keyscan->mustRun();
 
-        if ($keyscan->getExitCode() !== 0) {
+        if ($keyscan->getExitCode() === 0) {
             $this->result = trim($keyscan->getOutput());
             $this->writeContentsToTemporaryFile();
+        } else {
+            throw new InvalidArgumentException('Could not obtain host keys with ssh-keyscan');
         }
     }
 
