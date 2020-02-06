@@ -9,12 +9,8 @@ class SshKeyScan
 {
     private string $path;
     private string $result;
-    /**
-     * @var null|resource
-     */
-    private $tmpFile;
     private string $tmpFilePath;
-    private string $filePath;
+    private ?string $filePath;
 
     public function __construct(string $hostAddress, ?string $sshPort = '22', ?string $filePath = null, ?string $keyType = 'rsa')
     {
@@ -80,8 +76,7 @@ class SshKeyScan
         if (null !== $customPath) {
             file_put_contents($customPath, $this->result);
         } else {
-            $this->tmpFile = tmpfile();
-            $this->tmpFilePath = stream_get_meta_data($this->tmpFile)['uri'];
+            $this->tmpFilePath = stream_get_meta_data(tmpfile())['uri'];
             file_put_contents($this->tmpFilePath, $this->result);
         }
     }
