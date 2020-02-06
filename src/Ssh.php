@@ -14,7 +14,7 @@ class Ssh
 
     private ?int $port;
 
-    private bool $enableStrictHostChecking = false;
+    private bool $enableStrictHostChecking = true;
 
     public function __construct(string $user, string $host, int $port = null)
     {
@@ -44,9 +44,9 @@ class Ssh
         return $this;
     }
 
-    public function enableStrictHostKeyChecking(): self
+    public function disableStrictHostKeyChecking(): self
     {
-        $this->enableStrictHostChecking = true;
+        $this->enableStrictHostChecking = false;
 
         return $this;
     }
@@ -68,9 +68,9 @@ class Ssh
 
         $target = "{$this->user}@{$this->host}";
 
-        return "ssh {$extraOptions} $target 'bash -se' << \\$delimiter".PHP_EOL
-            .$commandString.PHP_EOL
-            .$delimiter;
+        return "ssh {$extraOptions} $target 'bash -se' << \\$delimiter" . PHP_EOL
+            . $commandString . PHP_EOL
+            . $delimiter;
     }
 
     /**
@@ -93,7 +93,7 @@ class Ssh
 
     protected function wrapArray($arrayOrString): array
     {
-        return (array) $arrayOrString;
+        return (array)$arrayOrString;
     }
 
     protected function getExtraOptions(): string
@@ -108,9 +108,13 @@ class Ssh
             $extraOptions[] = "-p {$this->port}";
         }
 
-        if (! $this->enableStrictHostChecking) {
+        if (!$this->enableStrictHostChecking) {
             $extraOptions[] = '-o StrictHostKeyChecking=no';
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
+        } else {
+            $extraOptions[] = '-o UserKnownHostsFile=' .
+                (new SshKeyScan($this->host, $this->port))
+                    ->getResultAsFilePath();
         }
 
         return implode(' ', $extraOptions);
