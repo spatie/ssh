@@ -14,7 +14,7 @@ class Ssh
 
     private ?int $port;
 
-    private bool $enableStrictHostChecking = false;
+    private bool $enableStrictHostChecking = true;
 
     public function __construct(string $user, string $host, int $port = null)
     {
@@ -47,6 +47,13 @@ class Ssh
     public function enableStrictHostKeyChecking(): self
     {
         $this->enableStrictHostChecking = true;
+
+        return $this;
+    }
+
+    public function disableStrictHostKeyChecking(): self
+    {
+        $this->enableStrictHostChecking = false;
 
         return $this;
     }

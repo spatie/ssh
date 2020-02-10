@@ -90,9 +90,9 @@ You can use `usePrivateKey` to specify a path to a private SSH key to use.
 Ssh::create('user', 'host')->usePrivateKey('/home/user/.ssh/id_rsa');
 ```
 
-### Strict host key checking
+### Disable Strict host key checking
 
-By default, strict host key checking is disabled. If you need more security you can enable strict host key checking using `enableStrictHostKeyChecking`.
+By default, strict host key checking is enabled. You can disable strict host key checking using `disableStrictHostKeyChecking`.
 
 ```php
 Ssh::create('user', 'host')->enableStrictHostKeyChecking();
