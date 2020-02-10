@@ -113,14 +113,14 @@ class Ssh
             $extraOptions[] = "-i {$this->pathToPrivateKey}";
         }
 
-        if ($this->port) {
+        if ($this->port !== 22) {
             $extraOptions[] = "-p {$this->port}";
         }
 
         if ($this->enableStrictHostChecking) {
             SshKeyScan::execute($this->host, $this->port, $this->customKnownHostsFileLocation);
 
-            if (null !== $this->customKnownHostsFileLocation) {
+            if ($this->customKnownHostsFileLocation !== '') {
                 $extraOptions[] = "-o UserKnownHostsFile={$this->customKnownHostsFileLocation}";
             }
         } else {

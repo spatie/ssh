@@ -9,7 +9,7 @@ class KnownHostsFile
     public function __construct(string $path)
     {
         $this->path = $path === ''
-            ? getenv('HOME') . PATH_SEPARATOR . '.ssh' . PATH_SEPARATOR . 'know_hosts'
+            ? getenv('HOME') . '/.ssh/known_hosts'
             : $path;
     }
 
