@@ -16,7 +16,7 @@ class Ssh
 
     private bool $enableStrictHostChecking = true;
 
-    private ?string $customKnownHostsFileLocation = null;
+    private string $customKnownHostsFileLocation = '';
 
     public function __construct(string $user, string $host, int $port = null)
     {

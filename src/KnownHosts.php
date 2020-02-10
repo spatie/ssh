@@ -22,10 +22,6 @@ class KnownHosts
 
     public function __construct(?string $customKnownHostsFile)
     {
-        if (! $this->hasPosixExtension()) {
-            throw new RuntimeException('PHP does not have POSIX extension enabled');
-        }
-
         if (! $this->hasEnvHomeSet()) {
             throw new RuntimeException('PHP cannot find $HOME env setting');
         }
@@ -53,8 +49,10 @@ class KnownHosts
     public function addHost(string $hostHash): void
     {
         $fileContents = file($this->file, FILE_SKIP_EMPTY_LINES);
+
         $fileContents[] = $hostHash.PHP_EOL;
-        file_put_contents($this->file, implode(PHP_EOL, array_unique($fileContents)));
+
+        file_put_contents($xthis->file, implode(PHP_EOL, array_unique($fileContents)));
     }
 
     protected function getFile(): string
@@ -73,7 +71,10 @@ class KnownHosts
     protected function ensureSshKnownHostsFileExists(): string
     {
         $this->ensureSshDirectoryExists();
+
         $filePath = $this->path.DIRECTORY_SEPARATOR.$this->knownHostsFile;
+
+
         self::touchIfRequired($filePath);
         self::chownIfRequired($filePath, $this->user);
         self::chmodIfRequired($filePath, $this->fileMode);
@@ -91,10 +92,6 @@ class KnownHosts
         return realpath(getenv('HOME').DIRECTORY_SEPARATOR.$this->knownHostsDirectory);
     }
 
-    /**
-     * To find out which username belongs to UID, ext-posix is required.
-     * https://www.php.net/manual/en/function.posix-getpwuid.php.
-     */
     protected static function getUsernameByUid(int $uid): string
     {
         return posix_getpwuid($uid)['name'];
