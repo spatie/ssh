@@ -12,13 +12,13 @@ class Ssh
 
     private string $pathToPrivateKey = '';
 
-    private ?int $port;
+    private int $port;
 
     private bool $enableStrictHostChecking = true;
 
     private string $customKnownHostsFileLocation = '';
 
-    public function __construct(string $user, string $host, int $port = null)
+    public function __construct(string $user, string $host, int $port = 22)
     {
         $this->user = $user;
 
@@ -118,8 +118,7 @@ class Ssh
         }
 
         if ($this->enableStrictHostChecking) {
-            (new SshKeyScan())
-                ->do($this->host, $this->port, $this->customKnownHostsFileLocation);
+            SshKeyScan::execute($this->host, $this->port, $this->customKnownHostsFileLocation);
 
             if (null !== $this->customKnownHostsFileLocation) {
                 $extraOptions[] = "-o UserKnownHostsFile={$this->customKnownHostsFileLocation}";

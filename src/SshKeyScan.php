@@ -7,13 +7,13 @@ use Symfony\Component\Process\Process;
 
 class SshKeyScan
 {
-    public function do(string $hostAddress, ?int $sshPort = 22, ?string $filePath = null, string $keyType = 'rsa'): void
+    public static function execute(string $hostAddress, int $sshPort = 22, string $customKnownHostsFileLocation = '', string $keyType = 'rsa'): void
     {
         $process = new Process([
-            $this->getSshKeyscanPath(),
-            ...$this->getSshPort((string) $sshPort),
+            static::getSshKeyScanPath(),
+            ...static::getSshPort((string) $sshPort),
             '-t', $keyType,
-            $this->getFormattedHostAddress($hostAddress),
+            static::getFormattedHostAddress($hostAddress),
         ]);
 
         $process->run();
@@ -23,14 +23,14 @@ class SshKeyScan
         }
 
         if ('' !== $process->getOutput()) {
-            (new KnownHosts($filePath))
+            (new KnownHostsFile($customKnownHostsFileLocation))
                 ->addHost(
                     trim($process->getOutput())
                 );
         }
     }
 
-    protected function getSshKeyscanPath(): string
+    protected static function getSshKeyScanPath(): string
     {
         $process = new Process(['which', 'ssh-keyscan']);
 
@@ -47,7 +47,7 @@ class SshKeyScan
      * Returns: Hostname,IP address
      * This is to ensure connections to both hostname address and ip address succeed.
      */
-    protected function getFormattedHostAddress(string $hostAddress): string
+    protected static function getFormattedHostAddress(string $hostAddress): string
     {
         if (filter_var($hostAddress, FILTER_VALIDATE_IP)) {
             return gethostbyaddr($hostAddress).','.$hostAddress;
@@ -56,7 +56,7 @@ class SshKeyScan
         return $hostAddress.','.gethostbyname($hostAddress);
     }
 
-    protected function getSshPort(?string $sshPort): array
+    protected static function getSshPort(?string $sshPort): array
     {
         return null !== $sshPort
             ? []
