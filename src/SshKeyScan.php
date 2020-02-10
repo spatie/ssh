@@ -19,7 +19,7 @@ class SshKeyScan
         $process->run();
 
         if (! $process->isSuccessful()) {
-            throw new InvalidArgumentException('Could not obtain host keys with ssh-keyscan: ' . $process->getOutput());
+            throw new InvalidArgumentException('Could not obtain host keys with ssh-keyscan: '.$process->getOutput());
         }
 
         if ('' !== $process->getOutput()) {
