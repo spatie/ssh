@@ -121,8 +121,7 @@ class Ssh
             (new SshKeyScan())
                 ->do($this->host, $this->port, $this->customKnownHostsFileLocation);
 
-            if(null !== $this->customKnownHostsFileLocation)
-            {
+            if(null !== $this->customKnownHostsFileLocation) {
                 $extraOptions[] = "-o UserKnownHostsFile={$this->customKnownHostsFileLocation}";
             }
         } else {

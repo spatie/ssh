@@ -4,15 +4,6 @@ namespace Spatie\Ssh;
 
 use RuntimeException;
 
-/**
- * Manages the creation of known_hosts and accepts new entries
- * A custom file path can be provided
- *
- * Assumes:
- *  - Host system is POSIX compliant
- *  - the $HOME variable is set
- *  - PHP user is allowed to make changes to known_hosts file and path
- */
 class KnownHosts
 {
     protected string $knownHostsDirectory = '.ssh';
@@ -31,6 +22,16 @@ class KnownHosts
 
     public function __construct(?string $customKnownHostsFile)
     {
+        if(! $this->hasPosixExtension())
+        {
+            throw new RuntimeException('PHP does not have POSIX extension enabled');
+        }
+
+        if(! $this->hasEnvHomeSet())
+        {
+            throw new RuntimeException('PHP cannot find $HOME env setting');
+        }
+
         $this->user = $this->getUser();
         if (null !== $customKnownHostsFile) {
             $this->path = dirname($customKnownHostsFile);
@@ -41,10 +42,20 @@ class KnownHosts
         }
     }
 
+    public function hasPosixExtension(): bool
+    {
+        return extension_loaded('posix');
+    }
+
+    public function hasEnvHomeSet(): bool
+    {
+        return null !== getenv('HOME');
+    }
+
     public function addHost(string $hostHash): void
     {
         $fileContents = file($this->file, FILE_SKIP_EMPTY_LINES);
-        $fileContents[] = $hostHash . PHP_EOL;
+        $fileContents[] = $hostHash.PHP_EOL;
         file_put_contents($this->file, implode(PHP_EOL, array_unique($fileContents)));
     }
 
@@ -55,8 +66,8 @@ class KnownHosts
 
     protected function ensureSshDirectoryExists(): void
     {
-        if (!is_dir($this->path) && !mkdir($this->path, $this->directoryMode, true) && !is_dir($this->path)) {
-            throw new RuntimeException('Directory "' . $this->path . '" was not created');
+        if (! is_dir($this->path) && ! mkdir($this->path, $this->directoryMode, true) && ! is_dir($this->path)) {
+            throw new RuntimeException('Directory "'.$this->path.'" was not created');
         }
         self::chownIfRequired($this->path, $this->user);
     }
@@ -64,7 +75,7 @@ class KnownHosts
     protected function ensureSshKnownHostsFileExists(): string
     {
         $this->ensureSshDirectoryExists();
-        $filePath = $this->path . DIRECTORY_SEPARATOR . $this->knownHostsFile;
+        $filePath = $this->path.DIRECTORY_SEPARATOR.$this->knownHostsFile;
         self::touchIfRequired($filePath);
         self::chownIfRequired($filePath, $this->user);
         self::chmodIfRequired($filePath, $this->fileMode);
@@ -79,12 +90,12 @@ class KnownHosts
 
     protected function getPath(): string
     {
-        return realpath(getenv('HOME') . DIRECTORY_SEPARATOR . $this->knownHostsDirectory);
+        return realpath(getenv('HOME').DIRECTORY_SEPARATOR.$this->knownHostsDirectory);
     }
 
     /**
      * To find out which username belongs to UID, ext-posix is required.
-     * https://www.php.net/manual/en/function.posix-getpwuid.php
+     * https://www.php.net/manual/en/function.posix-getpwuid.php.
      */
     protected static function getUsernameByUid(int $uid): string
     {
@@ -107,17 +118,17 @@ class KnownHosts
 
     protected static function touchIfRequired(string $path): void
     {
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             touch($path);
         }
     }
 
     /**
      * Output of fileperms is not octal, but it can be filtered out:
-     * https://www.php.net/manual/en/function.fileperms.php
+     * https://www.php.net/manual/en/function.fileperms.php.
      */
     protected static function getOctalPermissions(string $path): int
     {
-        return (int)substr(sprintf('%o', fileperms($path)), -4);
+        return (int) substr(sprintf('%o', fileperms($path)), -4);
     }
 }
