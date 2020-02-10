@@ -22,11 +22,11 @@ class KnownHosts
 
     public function __construct(?string $customKnownHostsFile)
     {
-        if(! $this->hasPosixExtension()) {
+        if (! $this->hasPosixExtension()) {
             throw new RuntimeException('PHP does not have POSIX extension enabled');
         }
 
-        if(! $this->hasEnvHomeSet()) {
+        if (! $this->hasEnvHomeSet()) {
             throw new RuntimeException('PHP cannot find $HOME env setting');
         }
 
