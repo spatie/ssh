@@ -16,13 +16,23 @@ class SshTest extends TestCase
     {
         parent::setUp();
 
-        $this->ssh = (new Ssh('user', 'example.com'));
+        touch('/tmp/custom');
+        touch('/tmp/test');
+        $this->ssh = (new Ssh('user', 'github.com'));
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        unlink('/tmp/custom');
+        unlink('/tmp/test');
     }
 
     /** @test */
     public function it_can_run_a_single_command()
     {
-        $command = $this->ssh->useCustomKnownHostsFileLocation('/tmp/test')->getSshCommand('whoami');
+        $command = $this->ssh->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }
@@ -30,7 +40,15 @@ class SshTest extends TestCase
     /** @test */
     public function it_can_run_multiple_commands()
     {
-        $command = $this->ssh->useCustomKnownHostsFileLocation('/tmp/test')->getSshCommand(['whoami', 'cd /var/log']);
+        $command = $this->ssh->getSshCommand(['whoami', 'cd /var/log']);
+
+        $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
+    public function it_can_use_a_custom_known_hosts_file_location()
+    {
+        $command = $this->ssh->useCustomKnownHostsFileLocation('/tmp/custom')->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }
@@ -38,7 +56,7 @@ class SshTest extends TestCase
     /** @test */
     public function it_can_use_a_specific_private_key()
     {
-        $command = $this->ssh->useCustomKnownHostsFileLocation('/tmp/test')->usePrivateKey('/home/user/.ssh/id_rsa')->getSshCommand('whoami');
+        $command = $this->ssh->usePrivateKey('/home/user/.ssh/id_rsa')->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }
@@ -46,7 +64,7 @@ class SshTest extends TestCase
     /** @test */
     public function it_can_set_the_port_via_the_constructor()
     {
-        $command = (new Ssh('user', 'example.com', 123))->useCustomKnownHostsFileLocation('/tmp/test')->getSshCommand('whoami');
+        $command = (new Ssh('user', 'example.com', 123))->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }
@@ -54,7 +72,7 @@ class SshTest extends TestCase
     /** @test */
     public function it_can_set_the_port_via_the_dedicated_function()
     {
-        $command = (new Ssh('user', 'example.com'))->useCustomKnownHostsFileLocation('/tmp/test')->usePort(123)->getSshCommand('whoami');
+        $command = (new Ssh('user', 'example.com'))->usePort(123)->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }
