@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Spatie\Ssh;
 
 use Symfony\Component\Process\Process;
