@@ -111,7 +111,7 @@ class Ssh
             $extraOptions[] = "-i {$this->pathToPrivateKey}";
         }
 
-        if ($this->port > -1) {
+        if ($this->port >= 0) {
             $extraOptions[] = "-p {$this->port}";
         }
 
