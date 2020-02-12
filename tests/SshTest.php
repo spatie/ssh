@@ -72,4 +72,12 @@ class SshTest extends TestCase
 
         $this->assertMatchesSnapshot($command);
     }
+
+    /** @test */
+    public function zero_is_a_valid_port_number()
+    {
+        $command = (new Ssh('user', 'example.com'))->usePort(0)->getSshCommand('whoami');
+
+        $this->assertMatchesSnapshot($command);
+    }
 }
