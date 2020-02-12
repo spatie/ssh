@@ -75,7 +75,7 @@ class Ssh
 
         $target = "{$this->user}@{$this->host}";
 
-        return "ssh {$extraOptions} $target 'bash -se' << \\$delimiter" . PHP_EOL
+        return "ssh {$extraOptions} $target 'bash -se' << \\$delimiter".PHP_EOL
             .$commandString.PHP_EOL
             .$delimiter;
     }
