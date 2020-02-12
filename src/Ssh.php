@@ -4,7 +4,7 @@ namespace Spatie\Ssh;
 
 use Symfony\Component\Process\Process;
 
-class Ssh
+final class Ssh
 {
     private string $user;
 
