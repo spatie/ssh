@@ -52,6 +52,13 @@ class SshTest extends TestCase
     }
 
     /** @test */
+    public function it_can_evaluate_port()
+    {
+        $command = (new Ssh('user', 'example.com', 0))->getSshCommand('whoami');
+        $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
     public function it_can_set_the_port_via_the_dedicated_function()
     {
         $command = (new Ssh('user', 'example.com'))->usePort(123)->getSshCommand('whoami');
