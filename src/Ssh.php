@@ -76,8 +76,8 @@ class Ssh
         $target = "{$this->user}@{$this->host}";
 
         return "ssh {$extraOptions} $target 'bash -se' << \\$delimiter" . PHP_EOL
-            . $commandString . PHP_EOL
-            . $delimiter;
+            .$commandString.PHP_EOL
+            .$delimiter;
     }
 
     /**
@@ -115,7 +115,7 @@ class Ssh
             $extraOptions[] = "-p {$this->port}";
         }
 
-        if (!$this->enableStrictHostChecking) {
+        if (! $this->enableStrictHostChecking) {
             $extraOptions[] = '-o StrictHostKeyChecking=no';
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
         }
