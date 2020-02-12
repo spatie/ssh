@@ -2,6 +2,7 @@
 
 namespace Spatie\Ssh;
 
+use Exception;
 use Symfony\Component\Process\Process;
 
 class Ssh
@@ -39,6 +40,9 @@ class Ssh
 
     public function usePort(int $port): self
     {
+        if ($port < 0) {
+            throw new Exception('Port must be a positive integer.');
+        }
         $this->port = $port;
 
         return $this;
@@ -111,7 +115,7 @@ class Ssh
             $extraOptions[] = "-i {$this->pathToPrivateKey}";
         }
 
-        if (null !== $this->port) {
+        if ($this->port >= 0) {
             $extraOptions[] = "-p {$this->port}";
         }
 

@@ -2,6 +2,7 @@
 
 namespace Spatie\Ssh\Tests;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 use Spatie\Ssh\Ssh;
@@ -79,5 +80,14 @@ class SshTest extends TestCase
         $command = (new Ssh('user', 'example.com'))->usePort(0)->getSshCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_if_a_port_is_negative()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Port must be a positive integer.');
+
+        $command = (new Ssh('user', 'example.com'))->usePort(-45)->getSshCommand('whoami');
     }
 }
