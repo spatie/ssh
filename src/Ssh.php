@@ -2,7 +2,6 @@
 
 namespace Spatie\Ssh;
 
-use Exception;
 use Symfony\Component\Process\Process;
 
 class Ssh

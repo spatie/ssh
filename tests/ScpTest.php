@@ -3,9 +3,9 @@
 namespace Spatie\Ssh\Tests;
 
 use Exception;
+use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 use Spatie\Ssh\Scp;
-use PHPUnit\Framework\TestCase;
 
 class ScpTest extends TestCase
 {
