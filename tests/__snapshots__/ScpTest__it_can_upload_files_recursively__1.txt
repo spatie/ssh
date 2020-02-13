@@ -1,0 +1,1 @@
+scp -r uploads user@example.com:spatie.be/current
