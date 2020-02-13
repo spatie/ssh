@@ -32,7 +32,7 @@ composer require spatie/ssh
 You can execute an SSH command like this:
 
 ```php
-$process = Ssh::create('user', 'host')->execute('your favorite command');
+$process = Ssh::create('user', 'example.com')->execute('your favorite command');
 ```
 
 It will return an instance of [Symfony's `Process`](https://symfony.com/doc/current/components/process.html).
@@ -58,7 +58,7 @@ $process->getOutput();
 To run multiple commands pass an array to the execute method.
 
 ```php
-$process = Ssh::create('user', 'host')->execute([
+$process = Ssh::create('user', 'example.com')->execute([
    'first command',
    'second command',
 ]);
