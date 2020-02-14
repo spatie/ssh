@@ -1,1 +1,1 @@
-scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@example.com:spatie.be/current/.env .env
+scp -r -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@example.com:spatie.be/current/.env .env

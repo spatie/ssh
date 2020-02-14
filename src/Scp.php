@@ -53,6 +53,8 @@ class Scp
     {
         $extraOptions = [];
 
+        $extraOptions[] = '-r';
+
         if ($this->pathToPrivateKey) {
             $extraOptions[] = "-i {$this->pathToPrivateKey}";
         }
@@ -64,10 +66,6 @@ class Scp
         if (! $this->enableStrictHostChecking) {
             $extraOptions[] = '-o StrictHostKeyChecking=no';
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
-        }
-
-        if ($this->recursive) {
-            $extraOptions[] = '-r';
         }
 
         return implode(' ', $extraOptions);

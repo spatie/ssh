@@ -37,22 +37,6 @@ class ScpTest extends TestCase
     }
 
     /** @test */
-    public function it_can_download_files_recursively()
-    {
-        $command = $this->scp->recursive()->getDownloadCommand('spatie.be/current', 'downloads');
-
-        $this->assertMatchesSnapshot($command);
-    }
-
-    /** @test */
-    public function it_can_upload_files_recursively()
-    {
-        $command = $this->scp->recursive()->getUploadCommand('uploads', 'spatie.be/current');
-
-        $this->assertMatchesSnapshot($command);
-    }
-
-    /** @test */
     public function it_can_use_a_specific_private_key()
     {
         $command = $this->scp

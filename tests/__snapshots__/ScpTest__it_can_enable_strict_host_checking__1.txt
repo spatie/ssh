@@ -1,1 +1,1 @@
-scp  user@example.com:spatie.be/current/.env .env
+scp -r user@example.com:spatie.be/current/.env .env
