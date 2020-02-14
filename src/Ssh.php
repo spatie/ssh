@@ -2,6 +2,7 @@
 
 namespace Spatie\Ssh;
 
+use Closure;
 use Exception;
 use Symfony\Component\Process\Process;
 
@@ -17,6 +18,8 @@ class Ssh
 
     protected bool $enableStrictHostChecking = true;
 
+    protected Closure $processConfigurationClosure;
+
     public function __construct(string $user, string $host, int $port = null)
     {
         $this->user = $user;
@@ -24,6 +27,8 @@ class Ssh
         $this->host = $host;
 
         $this->port = $port;
+
+        $this->processConfigurationClosure = fn(Process $process) => $process;
     }
 
     public static function create(...$args): self
@@ -44,6 +49,13 @@ class Ssh
             throw new Exception('Port must be a positive integer.');
         }
         $this->port = $port;
+
+        return $this;
+    }
+
+    public function configureProcess(Closure $processConfigurationClosure): self
+    {
+        $this->processConfigurationClosure = $processConfigurationClosure;
 
         return $this;
     }
@@ -170,6 +182,8 @@ class Ssh
         $process = Process::fromShellCommandline($command);
 
         $process->setTimeout(0);
+
+        ($this->processConfigurationClosure)($process);
 
         $process->run();
 

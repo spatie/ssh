@@ -6,6 +6,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 use Spatie\Ssh\Ssh;
+use Symfony\Component\Process\Process;
 
 class SshTest extends TestCase
 {
@@ -103,6 +104,16 @@ class SshTest extends TestCase
     public function it_can_upload_a_file()
     {
         $command = $this->ssh->getUploadCommand('.env', 'spatie.be/current/.env');
+
+        $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
+    public function it_can_configure_the_used_process()
+    {
+        $command = $this->ssh->configureProcess(function(Process $process) {
+            $process->setTimeout(0);
+        })->getExecuteCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
     }

@@ -100,7 +100,7 @@ Ssh::create('user', 'host')->disableStrictHostKeyChecking();
 
 ### Uploading & downloading files and directories
 
-You can upload files & directories to a host using `scp` as such:
+You can upload files & directories to a host using:
 
 ```php
 Ssh::create('user', 'host')->upload('path/to/local/file', 'path/to/host/file');
@@ -110,6 +110,18 @@ Or download them:
 
 ```php
 Ssh::create('user', 'host')->download('path/to/host/file', 'path/to/local/file');
+```
+
+Under the hood the process will use `scp`.
+
+### Modifying the Symfony process
+
+Behind the scenes all commands will be performed using [Symfonys `Process`](https://symfony.com/doc/current/components/process.html).
+
+You can configure to the `Process` by using the `configureProcess` method. Here's and example where we disable the timeout.
+
+```php
+Ssh::create('user', 'host')->useProcess(fn (Process $process) => $process->setTimeout(null));
 ```
 
 ## Testing
