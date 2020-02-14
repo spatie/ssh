@@ -2,6 +2,10 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.3.0 - 2020-02-14
+
+- add `onOutput`
+
 ## 1.2.0 - 2020-02-14
 
 - add `upload`, `download` and `configureProcess` methods
