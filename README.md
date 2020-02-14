@@ -121,7 +121,7 @@ Behind the scenes all commands will be performed using [Symfonys `Process`](http
 You can configure to the `Process` by using the `configureProcess` method. Here's and example where we disable the timeout.
 
 ```php
-Ssh::create('user', 'host')->useProcess(fn (Process $process) => $process->setTimeout(null));
+Ssh::create('user', 'host')->configureProcess(fn (Process $process) => $process->setTimeout(null));
 ```
 
 ## Testing
