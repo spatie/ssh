@@ -95,7 +95,21 @@ Ssh::create('user', 'host')->usePrivateKey('/home/user/.ssh/id_rsa');
 By default, strict host key checking is enabled. You can disable strict host key checking using `disableStrictHostKeyChecking`.
 
 ```php
-Ssh::create('user', 'host')->enableStrictHostKeyChecking();
+Ssh::create('user', 'host')->disableStrictHostKeyChecking();
+```
+
+### Uploading & downloading files and directories
+
+You can upload files & directories to a host using `scp` as such:
+
+```php
+Ssh::create('user', 'host')->upload('path/to/local/file', 'path/to/host/file');
+```
+
+Or download them:
+
+```php
+Ssh::create('user', 'host')->download('path/to/host/file', 'path/to/local/file');
 ```
 
 ## Testing

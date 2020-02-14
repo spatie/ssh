@@ -7,15 +7,15 @@ use Symfony\Component\Process\Process;
 
 class Ssh
 {
-    private string $user;
+    protected string $user;
 
-    private string $host;
+    protected string $host;
 
-    private string $pathToPrivateKey = '';
+    protected string $pathToPrivateKey = '';
 
-    private ?int $port;
+    protected ?int $port;
 
-    private bool $enableStrictHostChecking = true;
+    protected bool $enableStrictHostChecking = true;
 
     public function __construct(string $user, string $host, int $port = null)
     {
@@ -67,19 +67,19 @@ class Ssh
      *
      * @return string
      */
-    public function getSshCommand($command): string
+    public function getExecuteCommand($command): string
     {
         $commands = $this->wrapArray($command);
 
-        $extraOptions = $this->getExtraOptions();
+        $extraOptions = $this->getExtraSshOptions();
 
         $commandString = implode(PHP_EOL, $commands);
 
         $delimiter = 'EOF-SPATIE-SSH';
 
-        $target = "{$this->user}@{$this->host}";
+        $target = $this->getTarget();
 
-        return "ssh {$extraOptions} $target 'bash -se' << \\$delimiter".PHP_EOL
+        return "ssh {$extraOptions} {$target} 'bash -se' << \\$delimiter".PHP_EOL
             .$commandString.PHP_EOL
             .$delimiter;
     }
@@ -91,9 +91,83 @@ class Ssh
      */
     public function execute($command): Process
     {
-        $sshCommand = $this->getSshCommand($command);
+        $sshCommand = $this->getExecuteCommand($command);
 
-        $process = Process::fromShellCommandline($sshCommand);
+        return $this->run($sshCommand);
+    }
+
+    public function getDownloadCommand(string $sourcePath, string $destinationPath): string
+    {
+        return "scp {$this->getExtraScpOptions()} {$this->getTarget()}:$sourcePath $destinationPath";
+    }
+
+    public function download(string $sourcePath, string $destinationPath): Process
+    {
+        $downloadCommand = $this->getDownloadCommand($sourcePath, $destinationPath);
+
+        return $this->run($downloadCommand);
+    }
+
+    public function getUploadCommand(string $sourcePath, string $destinationPath): string
+    {
+        return "scp {$this->getExtraScpOptions()} $sourcePath {$this->getTarget()}:$destinationPath";
+    }
+
+    public function upload(string $sourcePath, string $destinationPath): Process
+    {
+        $uploadCommand = $this->getUploadCommand($sourcePath, $destinationPath);
+
+        return $this->run($uploadCommand);
+    }
+
+    protected function getExtraSshOptions(): string
+    {
+        $extraOptions = $this->getExtraOptions();
+
+        if (! is_null($this->port)) {
+            $extraOptions[] = "-p {$this->port}";
+        }
+
+        return implode(' ', $extraOptions);
+    }
+
+    protected function getExtraScpOptions(): string
+    {
+        $extraOptions = $this->getExtraOptions();
+
+        $extraOptions[] = '-r';
+
+        if (! is_null($this->port)) {
+            $extraOptions[] = "-P {$this->port}";
+        }
+
+        return implode(' ', $extraOptions);
+    }
+
+    private function getExtraOptions(): array
+    {
+        $extraOptions = [];
+
+        if ($this->pathToPrivateKey) {
+            $extraOptions[] = "-i {$this->pathToPrivateKey}";
+        }
+
+        if (! $this->enableStrictHostChecking) {
+            $extraOptions[] = '-o StrictHostKeyChecking=no';
+            $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
+        }
+
+        return $extraOptions;
+    }
+
+    protected function wrapArray($arrayOrString): array
+    {
+        return (array) $arrayOrString;
+    }
+
+    protected function run(string $command): Process
+    {
+        $process = Process::fromShellCommandline($command);
 
         $process->setTimeout(0);
 
@@ -102,28 +176,8 @@ class Ssh
         return $process;
     }
 
-    protected function wrapArray($arrayOrString): array
+    protected function getTarget(): string
     {
-        return (array) $arrayOrString;
-    }
-
-    protected function getExtraOptions(): string
-    {
-        $extraOptions = [];
-
-        if ($this->pathToPrivateKey) {
-            $extraOptions[] = "-i {$this->pathToPrivateKey}";
-        }
-
-        if (! is_null($this->port)) {
-            $extraOptions[] = "-p {$this->port}";
-        }
-
-        if (! $this->enableStrictHostChecking) {
-            $extraOptions[] = '-o StrictHostKeyChecking=no';
-            $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
-        }
-
-        return implode(' ', $extraOptions);
+        return "{$this->user}@{$this->host}";
     }
 }
