@@ -103,43 +103,13 @@ Ssh::create('user', 'host')->disableStrictHostKeyChecking();
 You can upload files & directories to a host using `scp` as such:
 
 ```php
-Scp::create('user', 'host')->upload('path/to/local/file', 'path/to/host/file');
+Ssh::create('user', 'host')->upload('path/to/local/file', 'path/to/host/file');
 ```
 
 Or download them:
 
 ```php
-Scp::create('user', 'host')->download('path/to/host/file', 'path/to/local/file');
-```
-
-It is also possible to upload files recursively like this:
-
-```php
-Scp::create('user', 'host')->recursive()->upload('path/to/local/dir', 'path/to/host/dir');
-```
-
-Off course you can download them recursively:
-
-```php
-Scp::create('user', 'host')->recursive()->download('path/to/host/dir', 'path/to/local/dir');
-```
-
-Each time you're uploading or downloading, the package will return an instance of [Symfony's `Process`](https://symfony.com/doc/current/components/process.html). You can then check yourself if the process was successful:
-
-```php
-$process = Scp::create('user', 'example.com')->upload('path/to/local/file', 'path/to/host/file');
-
-$process->isSuccessful();
-```
-
-Some of the ssh methods described above can also be applied when downloading or uploading:
-
-```php
-Scp::create('user', 'host')
-    ->usePort($port)
-    ->disableStrictHostKeyChecking()
-    ->usePrivateKey('/home/user/.ssh/id_rsa')
-    ->upload('path/to/local/file', 'path/to/host/file');
+Ssh::create('user', 'host')->download('path/to/host/file', 'path/to/local/file');
 ```
 
 ## Testing

@@ -2,22 +2,76 @@
 
 namespace Spatie\Ssh;
 
+use Exception;
 use Symfony\Component\Process\Process;
 
 class Ssh
 {
-    use SecureConnection;
+    protected string $user;
+
+    protected string $host;
+
+    protected string $pathToPrivateKey = '';
+
+    protected ?int $port;
+
+    protected bool $enableStrictHostChecking = true;
+
+    public function __construct(string $user, string $host, int $port = null)
+    {
+        $this->user = $user;
+
+        $this->host = $host;
+
+        $this->port = $port;
+    }
+
+    public static function create(...$args): self
+    {
+        return new static(...$args);
+    }
+
+    public function usePrivateKey(string $pathToPrivateKey): self
+    {
+        $this->pathToPrivateKey = $pathToPrivateKey;
+
+        return $this;
+    }
+
+    public function usePort(int $port): self
+    {
+        if ($port < 0) {
+            throw new Exception('Port must be a positive integer.');
+        }
+        $this->port = $port;
+
+        return $this;
+    }
+
+    public function enableStrictHostKeyChecking(): self
+    {
+        $this->enableStrictHostChecking = true;
+
+        return $this;
+    }
+
+    public function disableStrictHostKeyChecking(): self
+    {
+        $this->enableStrictHostChecking = false;
+
+        return $this;
+    }
 
     /**
      * @param string|array $command
      *
      * @return string
      */
-    public function getCommand($command): string
+    public function getExecuteCommand($command): string
     {
         $commands = $this->wrapArray($command);
 
-        $extraOptions = $this->getExtraOptions();
+        $extraOptions = $this->getExtraSshOptions();
 
         $commandString = implode(PHP_EOL, $commands);
 
@@ -37,12 +91,60 @@ class Ssh
      */
     public function execute($command): Process
     {
-        $sshCommand = $this->getCommand($command);
+        $sshCommand = $this->getExecuteCommand($command);
 
         return $this->run($sshCommand);
     }
 
-    protected function getExtraOptions(): string
+    public function getDownloadCommand(string $sourcePath, string $destinationPath): string
+    {
+        return "scp {$this->getExtraScpOptions()} {$this->getTarget()}:$sourcePath $destinationPath";
+    }
+
+    public function download(string $sourcePath, string $destinationPath): Process
+    {
+        $downloadCommand = $this->getDownloadCommand($sourcePath, $destinationPath);
+
+        return $this->run($downloadCommand);
+    }
+
+    public function getUploadCommand(string $sourcePath, string $destinationPath): string
+    {
+        return "scp {$this->getExtraScpOptions()} $sourcePath {$this->getTarget()}:$destinationPath";
+    }
+
+    public function upload(string $sourcePath, string $destinationPath): Process
+    {
+        $uploadCommand = $this->getUploadCommand($sourcePath, $destinationPath);
+
+        return $this->run($uploadCommand);
+    }
+
+    protected function getExtraSshOptions(): string
+    {
+        $extraOptions = $this->getExtraOptions();
+
+        if (! is_null($this->port)) {
+            $extraOptions[] = "-p {$this->port}";
+        }
+
+        return implode(' ', $extraOptions);
+    }
+
+    protected function getExtraScpOptions(): string
+    {
+        $extraOptions = $this->getExtraOptions();
+
+        $extraOptions[] = '-r';
+
+        if (! is_null($this->port)) {
+            $extraOptions[] = "-P {$this->port}";
+        }
+
+        return implode(' ', $extraOptions);
+    }
+
+    private function getExtraOptions(): array
     {
         $extraOptions = [];
 
@@ -50,20 +152,32 @@ class Ssh
             $extraOptions[] = "-i {$this->pathToPrivateKey}";
         }
 
-        if (! is_null($this->port)) {
-            $extraOptions[] = "-p {$this->port}";
-        }
-
         if (! $this->enableStrictHostChecking) {
             $extraOptions[] = '-o StrictHostKeyChecking=no';
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
         }
 
-        return implode(' ', $extraOptions);
+        return $extraOptions;
     }
 
     protected function wrapArray($arrayOrString): array
     {
         return (array) $arrayOrString;
+    }
+
+    protected function run(string $command): Process
+    {
+        $process = Process::fromShellCommandline($command);
+
+        $process->setTimeout(0);
+
+        $process->run();
+
+        return $process;
+    }
+
+    protected function getTarget(): string
+    {
+        return "{$this->user}@{$this->host}";
     }
 }
