@@ -20,6 +20,8 @@ class Ssh
 
     protected Closure $processConfigurationClosure;
 
+    protected Closure $onOutput;
+
     public function __construct(string $user, string $host, int $port = null)
     {
         $this->user = $user;
@@ -28,7 +30,9 @@ class Ssh
 
         $this->port = $port;
 
-        $this->processConfigurationClosure = fn(Process $process) => $process;
+        $this->processConfigurationClosure = fn(Process $process) => null;
+
+        $this->onOutput = fn($type, $line) => null;
     }
 
     public static function create(...$args): self
@@ -56,6 +60,13 @@ class Ssh
     public function configureProcess(Closure $processConfigurationClosure): self
     {
         $this->processConfigurationClosure = $processConfigurationClosure;
+
+        return $this;
+    }
+
+    public function onOutput(Closure $onOutput): self
+    {
+        $this->onOutput = $onOutput;
 
         return $this;
     }
@@ -185,7 +196,7 @@ class Ssh
 
         ($this->processConfigurationClosure)($process);
 
-        $process->run();
+        $process->run($this->onOutput);
 
         return $process;
     }

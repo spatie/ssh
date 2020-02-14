@@ -124,6 +124,18 @@ You can configure to the `Process` by using the `configureProcess` method. Here'
 Ssh::create('user', 'host')->configureProcess(fn (Process $process) => $process->setTimeout(null));
 ```
 
+### Immediately responding to output
+
+You can get notified whenever you command produces output by setting by passing a closure to `onOuput`. 
+
+```php
+Ssh::create('user', 'host')->onOutput(fn($type, $line) => echo $line)->execute('whoami');
+```
+
+Whenever there is output that close will get called with two parameters:
+- `type`: this can be `Symfony\Component\Process\Process::OUT` for regular output and `Symfony\Component\Process\Process::ERR` for error output
+- `line`: the output itself
+
 ## Testing
 
 ``` bash
