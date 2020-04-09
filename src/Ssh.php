@@ -124,7 +124,7 @@ class Ssh
      *
      * @return \Symfony\Component\Process\Process
      */
-    public function executeAsync($command)
+    public function executeAsync($command): Process
     {
         $sshCommand = $this->getExecuteCommand($command);
 
@@ -200,7 +200,7 @@ class Ssh
         return (array) $arrayOrString;
     }
 
-    protected function run(string $command, $method = 'run'): Process
+    protected function run(string $command, string $method = 'run'): Process
     {
         $process = Process::fromShellCommandline($command);
 
