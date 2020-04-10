@@ -37,6 +37,12 @@ $process = Ssh::create('user', 'example.com')->execute('your favorite command');
 
 It will return an instance of [Symfony's `Process`](https://symfony.com/doc/current/components/process.html).
 
+If you don't want to wait until the execute commands complete, you can call `executeAsync`
+
+```php
+$process = Ssh::create('user', 'example.com')->executeAsync('your favorite command');
+```
+
 ### Getting the result of a command
 
 To check if your command ran ok
