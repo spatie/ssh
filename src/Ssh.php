@@ -119,6 +119,18 @@ class Ssh
         return $this->run($sshCommand);
     }
 
+    /**
+     * @param string|array $command
+     *
+     * @return \Symfony\Component\Process\Process
+     */
+    public function executeAsync($command): Process
+    {
+        $sshCommand = $this->getExecuteCommand($command);
+
+        return $this->run($sshCommand, 'start');
+    }
+
     public function getDownloadCommand(string $sourcePath, string $destinationPath): string
     {
         return "scp {$this->getExtraScpOptions()} {$this->getTarget()}:$sourcePath $destinationPath";
@@ -188,7 +200,7 @@ class Ssh
         return (array) $arrayOrString;
     }
 
-    protected function run(string $command): Process
+    protected function run(string $command, string $method = 'run'): Process
     {
         $process = Process::fromShellCommandline($command);
 
@@ -196,7 +208,7 @@ class Ssh
 
         ($this->processConfigurationClosure)($process);
 
-        $process->run($this->onOutput);
+        $process->{$method}($this->onOutput);
 
         return $process;
     }
