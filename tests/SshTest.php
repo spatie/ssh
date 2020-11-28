@@ -111,7 +111,7 @@ class SshTest extends TestCase
     /** @test */
     public function it_can_configure_the_used_process()
     {
-        $command = $this->ssh->configureProcess(function(Process $process) {
+        $command = $this->ssh->configureProcess(function (Process $process) {
             $process->setTimeout(0);
         })->getExecuteCommand('whoami');
 
