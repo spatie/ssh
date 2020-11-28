@@ -2,6 +2,10 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.4.1 - 2020-11-28
+
+- add support for PHP 8
+
 ## 1.4.0 - 2020-04-10
 
 - add `executeAsync`
