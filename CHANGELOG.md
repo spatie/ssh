@@ -2,6 +2,10 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.5.0 - 2021-01-04
+
+- add quiet mode option (#40)
+
 ## 1.4.1 - 2020-11-28
 
 - add support for PHP 8
