@@ -76,6 +76,14 @@ class SshTest extends TestCase
     }
 
     /** @test */
+    public function it_can_enable_quiet_mode()
+    {
+        $command = (new Ssh('user', 'example.com'))->enableQuietMode()->getExecuteCommand('whoami');
+
+        $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
     public function zero_is_a_valid_port_number()
     {
         $command = (new Ssh('user', 'example.com'))->usePort(0)->getExecuteCommand('whoami');

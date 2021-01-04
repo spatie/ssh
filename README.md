@@ -103,6 +103,13 @@ By default, strict host key checking is enabled. You can disable strict host key
 ```php
 Ssh::create('user', 'host')->disableStrictHostKeyChecking();
 ```
+### Enable quiet mode
+
+By default, the quiet mode is disabled. You can enable quiet mode using `enableQuietMode`.
+
+```php
+Ssh::create('user', 'host')->enableQuietMode();
+```
 
 ### Uploading & downloading files and directories
 
