@@ -18,6 +18,8 @@ class Ssh
 
     protected bool $enableStrictHostChecking = true;
 
+    protected bool $quietMode = false;
+
     protected Closure $processConfigurationClosure;
 
     protected Closure $onOutput;
@@ -81,6 +83,20 @@ class Ssh
     public function disableStrictHostKeyChecking(): self
     {
         $this->enableStrictHostChecking = false;
+
+        return $this;
+    }
+
+    public function enableQuietMode(): self
+    {
+        $this->quietMode = true;
+
+        return $this;
+    }
+
+    public function disableQuietMode(): self
+    {
+        $this->quietMode = false;
 
         return $this;
     }
@@ -190,6 +206,10 @@ class Ssh
         if (! $this->enableStrictHostChecking) {
             $extraOptions[] = '-o StrictHostKeyChecking=no';
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
+        }
+
+        if ($this->quietMode) {
+            $extraOptions[] = '-q';
         }
 
         return $extraOptions;
