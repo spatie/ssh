@@ -113,6 +113,8 @@ class Ssh
     public function enablePasswordAuthentication(): self
     {
         $this->enablePasswordAuthentication = true;
+
+        return $this;
     }
 
     /**
