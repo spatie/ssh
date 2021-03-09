@@ -20,6 +20,8 @@ class Ssh
 
     protected bool $quietMode = false;
 
+    protected bool $enablePasswordAuthentication = true;
+
     protected Closure $processConfigurationClosure;
 
     protected Closure $onOutput;
@@ -99,6 +101,18 @@ class Ssh
         $this->quietMode = false;
 
         return $this;
+    }
+
+    public function disablePasswordAuthentication(): self
+    {
+        $this->enablePasswordAuthentication = false;
+
+        return $this;
+    }
+
+    public function enablePasswordAuthentication(): self
+    {
+        $this->enablePasswordAuthentication = true;
     }
 
     /**
@@ -206,6 +220,10 @@ class Ssh
         if (! $this->enableStrictHostChecking) {
             $extraOptions[] = '-o StrictHostKeyChecking=no';
             $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
+        }
+
+        if (! $this->enablePasswordAuthentication) {
+            $extraOptions[] = '-o PasswordAuthentication=no';
         }
 
         if ($this->quietMode) {
