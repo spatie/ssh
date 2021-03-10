@@ -2,6 +2,10 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.6.0 - 2021-03-10
+
+- add ability to disable/enable password authentication (#42)
+
 ## 1.5.0 - 2021-01-04
 
 - add quiet mode option (#40)
