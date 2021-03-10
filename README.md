@@ -111,6 +111,14 @@ By default, the quiet mode is disabled. You can enable quiet mode using `enableQ
 Ssh::create('user', 'host')->enableQuietMode();
 ```
 
+### Disable Password Authentication
+
+By default, the password authentication is enabled. You can disable password authentication using `disablePasswordAuthentication`.
+
+```php
+Ssh::create('user', 'host')->disablePasswordAuthentication();
+```
+
 ### Uploading & downloading files and directories
 
 You can upload files & directories to a host using:
