@@ -18,6 +18,8 @@ class Ssh
 
     protected bool $enableStrictHostChecking = true;
 
+    protected bool $identitiesOnly = false;
+
     protected bool $quietMode = false;
 
     protected bool $enablePasswordAuthentication = true;
@@ -99,6 +101,20 @@ class Ssh
     public function disableQuietMode(): self
     {
         $this->quietMode = false;
+
+        return $this;
+    }
+
+    public function enableIdentitiesOnly(): self
+    {
+        $this->identitiesOnly = true;
+
+        return $this;
+    }
+
+    public function disableIdentitiesOnly(): self
+    {
+        $this->identitiesOnly = false;
 
         return $this;
     }
@@ -226,6 +242,10 @@ class Ssh
 
         if (! $this->enablePasswordAuthentication) {
             $extraOptions[] = '-o PasswordAuthentication=no';
+        }
+
+        if ($this->identitiesOnly) {
+            $extraOptions[] = '-o IdentitiesOnly=yes';
         }
 
         if ($this->quietMode) {

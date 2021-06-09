@@ -84,6 +84,14 @@ class SshTest extends TestCase
     }
 
     /** @test */
+    public function it_can_enable_identities_only()
+    {
+        $command = (new Ssh('user', 'example.com'))->enableIdentitiesOnly()->getExecuteCommand('whoami');
+
+        $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
     public function it_can_disable_password_authentication()
     {
         $command = (new Ssh('user', 'example.com'))->disablePasswordAuthentication()->getExecuteCommand('whoami');
