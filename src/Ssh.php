@@ -45,6 +45,13 @@ class Ssh
         return $this;
     }
 
+    public function useJumpHost(string $jumpHost):self
+    {
+        $this->extraOptions['jump_host'] = '-J ' . $jumpHost;
+
+        return $this;
+    }
+
     public function usePort(int $port): self
     {
         if ($port < 0) {
