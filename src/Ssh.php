@@ -12,15 +12,7 @@ class Ssh
 
     protected string $host;
 
-    protected string $pathToPrivateKey = '';
-
-    protected ?int $port;
-
-    protected bool $enableStrictHostChecking = true;
-
-    protected bool $quietMode = false;
-
-    protected bool $enablePasswordAuthentication = true;
+    protected array $extraOptions = [];
 
     protected Closure $processConfigurationClosure;
 
@@ -32,7 +24,9 @@ class Ssh
 
         $this->host = $host;
 
-        $this->port = $port;
+        if ($port !== null){
+            $this->usePort($port);
+        }
 
         $this->processConfigurationClosure = fn (Process $process) => null;
 
@@ -46,7 +40,14 @@ class Ssh
 
     public function usePrivateKey(string $pathToPrivateKey): self
     {
-        $this->pathToPrivateKey = $pathToPrivateKey;
+        $this->extraOptions['private_key'] = '-i ' . $pathToPrivateKey;
+
+        return $this;
+    }
+
+    public function useJumpHost(string $jumpHost):self
+    {
+        $this->extraOptions['jump_host'] = '-J ' . $jumpHost;
 
         return $this;
     }
@@ -56,7 +57,7 @@ class Ssh
         if ($port < 0) {
             throw new Exception('Port must be a positive integer.');
         }
-        $this->port = $port;
+        $this->extraOptions['port'] = '-p ' . $port;
 
         return $this;
     }
@@ -77,42 +78,49 @@ class Ssh
 
     public function enableStrictHostKeyChecking(): self
     {
-        $this->enableStrictHostChecking = true;
+        unset($this->extraOptions['enable_strict_check']);
 
         return $this;
     }
 
     public function disableStrictHostKeyChecking(): self
     {
-        $this->enableStrictHostChecking = false;
+        $this->extraOptions['enable_strict_check'] = '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null';
 
         return $this;
     }
 
     public function enableQuietMode(): self
     {
-        $this->quietMode = true;
+        $this->extraOptions['quiet'] = '-q';
 
         return $this;
     }
 
     public function disableQuietMode(): self
     {
-        $this->quietMode = false;
+        unset($this->extraOptions['quiet']);
 
         return $this;
     }
 
     public function disablePasswordAuthentication(): self
     {
-        $this->enablePasswordAuthentication = false;
+        $this->extraOptions['password_authentication'] = '-o PasswordAuthentication=no';
 
         return $this;
     }
 
     public function enablePasswordAuthentication(): self
     {
-        $this->enablePasswordAuthentication = true;
+        unset($this->extraOptions['password_authentication']);
+
+        return $this;
+    }
+
+    public function addExtraOption(string $option): self
+    {
+        $this->extraOptions[] = $option;
 
         return $this;
     }
@@ -126,7 +134,7 @@ class Ssh
     {
         $commands = $this->wrapArray($command);
 
-        $extraOptions = $this->getExtraSshOptions();
+        $extraOptions = implode(' ', $this->getExtraOptions());
 
         $commandString = implode(PHP_EOL, $commands);
 
@@ -187,52 +195,18 @@ class Ssh
         return $this->run($uploadCommand);
     }
 
-    protected function getExtraSshOptions(): string
-    {
-        $extraOptions = $this->getExtraOptions();
-
-        if (! is_null($this->port)) {
-            $extraOptions[] = "-p {$this->port}";
-        }
-
-        return implode(' ', $extraOptions);
-    }
-
     protected function getExtraScpOptions(): string
     {
         $extraOptions = $this->getExtraOptions();
 
         $extraOptions[] = '-r';
 
-        if (! is_null($this->port)) {
-            $extraOptions[] = "-P {$this->port}";
-        }
-
         return implode(' ', $extraOptions);
     }
 
     private function getExtraOptions(): array
     {
-        $extraOptions = [];
-
-        if ($this->pathToPrivateKey) {
-            $extraOptions[] = "-i {$this->pathToPrivateKey}";
-        }
-
-        if (! $this->enableStrictHostChecking) {
-            $extraOptions[] = '-o StrictHostKeyChecking=no';
-            $extraOptions[] = '-o UserKnownHostsFile=/dev/null';
-        }
-
-        if (! $this->enablePasswordAuthentication) {
-            $extraOptions[] = '-o PasswordAuthentication=no';
-        }
-
-        if ($this->quietMode) {
-            $extraOptions[] = '-q';
-        }
-
-        return $extraOptions;
+        return array_values($this->extraOptions);
     }
 
     protected function wrapArray($arrayOrString): array
