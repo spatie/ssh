@@ -197,11 +197,15 @@ class Ssh
 
     protected function getExtraScpOptions(): string
     {
-        $extraOptions = $this->getExtraOptions();
+        $extraOptions = $this->extraOptions;
+
+        if (isset($extraOptions['port'])) {
+            $extraOptions['port'] = str_replace('-p', '-P', $extraOptions['port']);
+        }
 
         $extraOptions[] = '-r';
 
-        return implode(' ', $extraOptions);
+        return implode(' ', array_values($extraOptions));
     }
 
     private function getExtraOptions(): array
