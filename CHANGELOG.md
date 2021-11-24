@@ -2,6 +2,18 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.7.1 - 2021-11-24
+
+## What's Changed
+
+- fix uppercase port option for scp by @timrspratt in https://github.com/spatie/ssh/pull/55
+
+## New Contributors
+
+- @timrspratt made their first contribution in https://github.com/spatie/ssh/pull/55
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.7.0...1.7.1
+
 ## 1.6.0 - 2021-03-10
 
 - add ability to disable/enable password authentication (#42)
