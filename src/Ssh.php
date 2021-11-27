@@ -24,7 +24,7 @@ class Ssh
 
         $this->host = $host;
 
-        if ($port !== null){
+        if ($port !== null) {
             $this->usePort($port);
         }
 
