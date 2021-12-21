@@ -2,6 +2,20 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.7.2 - 2021-12-21
+
+## What's Changed
+
+- Minor Package Maintenance by @patinthehat in https://github.com/spatie/ssh/pull/57
+- Add support for symfony v6 by @Nielsvanpach in https://github.com/spatie/ssh/pull/58
+
+## New Contributors
+
+- @patinthehat made their first contribution in https://github.com/spatie/ssh/pull/57
+- @Nielsvanpach made their first contribution in https://github.com/spatie/ssh/pull/58
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.7.1...1.7.2
+
 ## 1.7.1 - 2021-11-24
 
 ## What's Changed
