@@ -4,6 +4,7 @@ namespace Spatie\Ssh;
 
 use Closure;
 use Exception;
+use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 
 class Ssh
@@ -126,25 +127,26 @@ class Ssh
     }
 
     /**
-     * @param string|array $command
-     *
      * @return string
      */
-    public function getExecuteCommand($command): string
+    public function getExecuteCommand(): string
     {
-        $commands = $this->wrapArray($command);
-
-        $extraOptions = implode(' ', $this->getExtraOptions());
-
-        $commandString = implode(PHP_EOL, $commands);
-
-        $delimiter = 'EOF-SPATIE-SSH';
-
+        $extraOptions = $this->getExtraOptions();
         $target = $this->getTarget();
 
-        return "ssh {$extraOptions} {$target} 'bash -se' << \\$delimiter".PHP_EOL
-            .$commandString.PHP_EOL
-            .$delimiter;
+        $extraOptionString = implode(' ',$extraOptions);
+
+        $commandline = [];
+
+        $commandline[] = 'ssh';
+        if(count($extraOptions)>0){
+            $commandline[] = $extraOptionString;
+        }
+        $commandline[] = $target;
+
+        $commandline[] = 'bash';
+
+        return implode(' ',$commandline);
     }
 
     /**
@@ -154,9 +156,10 @@ class Ssh
      */
     public function execute($command): Process
     {
-        $sshCommand = $this->getExecuteCommand($command);
+        $sshCommand = $this->getExecuteCommand();
+        $commands = $this->wrapArray($command);
 
-        return $this->run($sshCommand);
+        return $this->run($sshCommand,$commands);
     }
 
     /**
@@ -166,9 +169,10 @@ class Ssh
      */
     public function executeAsync($command): Process
     {
-        $sshCommand = $this->getExecuteCommand($command);
+        $sshCommand = $this->getExecuteCommand();
+        $commands = $this->wrapArray($command);
 
-        return $this->run($sshCommand, 'start');
+        return $this->run($sshCommand,$commands,true);
     }
 
     public function getDownloadCommand(string $sourcePath, string $destinationPath): string
@@ -180,7 +184,7 @@ class Ssh
     {
         $downloadCommand = $this->getDownloadCommand($sourcePath, $destinationPath);
 
-        return $this->run($downloadCommand);
+        return $this->run($downloadCommand,[]);
     }
 
     public function getUploadCommand(string $sourcePath, string $destinationPath): string
@@ -192,7 +196,7 @@ class Ssh
     {
         $uploadCommand = $this->getUploadCommand($sourcePath, $destinationPath);
 
-        return $this->run($uploadCommand);
+        return $this->run($uploadCommand,[]);
     }
 
     protected function getExtraScpOptions(): string
@@ -218,15 +222,26 @@ class Ssh
         return (array) $arrayOrString;
     }
 
-    protected function run(string $command, string $method = 'run'): Process
+    protected function run(string $command,$commands,bool $async=false): Process
     {
         $process = Process::fromShellCommandline($command);
+
+        $input = new InputStream();
+        $process->setInput($input);
 
         $process->setTimeout(0);
 
         ($this->processConfigurationClosure)($process);
 
-        $process->{$method}($this->onOutput);
+        $process->start($this->onOutput);
+
+        foreach($commands AS $command){
+            $input->write($command.PHP_EOL);
+        }
+        $input->close();
+        if(!$async){
+            $process->wait();
+        }
 
         return $process;
     }
