@@ -62,6 +62,12 @@ class Ssh
         return $this;
     }
 
+    public function useMultiplexing(string $controlPath, string $controlPersist = '10m'):self
+    {
+        $this->extraOptions['control_master'] = '-o ControlMaster=auto -o ControlPath=' . $controlPath . ' -o ControlPersist=' . $controlPersist;
+        return $this;
+    }
+
     public function configureProcess(Closure $processConfigurationClosure): self
     {
         $this->processConfigurationClosure = $processConfigurationClosure;

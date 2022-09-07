@@ -62,6 +62,14 @@ class SshTest extends TestCase
     }
 
     /** @test */
+    public function it_can_set_the_multiplex_path_via_the_dedicated_function()
+    {
+        $command = (new Ssh('user', 'example.com'))->useMultiplexing('/home/test/control_masters/%C', '15m')->getExecuteCommand('whoami');
+
+        $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
     public function it_can_instantiate_via_the_create_method()
     {
         $this->assertInstanceOf(Ssh::class, Ssh::create('user', 'example.com'));
