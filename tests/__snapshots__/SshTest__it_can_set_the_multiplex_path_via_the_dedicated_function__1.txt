@@ -1,0 +1,3 @@
+ssh -o ControlMaster=auto -o ControlPath=/home/test/control_masters/%C -o ControlPersist=15m user@example.com 'bash -se' << \EOF-SPATIE-SSH
+whoami
+EOF-SPATIE-SSH

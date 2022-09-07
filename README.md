@@ -90,6 +90,26 @@ Alternatively you can use the `usePort` function:
 Ssh::create('user', 'host')->usePort($port);
 ```
 
+### Specifying a jump host
+
+If using a jump/proxy/bastion host, the `useJumpHost` function allows you to set the jump hosts details:
+
+```php
+Ssh::create('user', 'host')->useJumpHost("$jumpuser@$jumphost:$jumpport");
+```
+
+### Using SSH multiplexing
+
+If making many connections to the same host, SSH multiplexing enables re-using one TCP connection. Call `useMultiplexing` function to set control master options:
+
+```php
+Ssh::create('user', 'host')->useMultiplexing($controlPath, $controlPersist);
+
+// Ssh::create('user', 'host')->useMultiplexing('/home/.ssh/control_masters/%C', '15m');
+
+```
+
+
 ### Specifying the private key to use
 
 You can use `usePrivateKey` to specify a path to a private SSH key to use.
