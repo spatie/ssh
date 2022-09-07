@@ -2,6 +2,20 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.8.0 - 2022-09-07
+
+### What's Changed
+
+- Update .gitattributes by @angeljqv in https://github.com/spatie/ssh/pull/63
+- Multiplexing support by @Dachande663 in https://github.com/spatie/ssh/pull/65
+
+### New Contributors
+
+- @angeljqv made their first contribution in https://github.com/spatie/ssh/pull/63
+- @Dachande663 made their first contribution in https://github.com/spatie/ssh/pull/65
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.7.2...1.8.0
+
 ## 1.7.2 - 2021-12-21
 
 ## What's Changed
