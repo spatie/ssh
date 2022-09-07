@@ -90,6 +90,14 @@ Alternatively you can use the `usePort` function:
 Ssh::create('user', 'host')->usePort($port);
 ```
 
+### Specifying a jump host
+
+If using a jump/proxy/bastion host, the `useJumpHost` function allows you to set the jump hosts details:
+
+```php
+Ssh::create('user', 'host')->useJumpHost("$jumpuser@$jumphost:$jumpport");
+```
+
 ### Specifying the private key to use
 
 You can use `usePrivateKey` to specify a path to a private SSH key to use.
