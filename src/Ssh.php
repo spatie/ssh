@@ -230,11 +230,7 @@ class Ssh
 
     protected function run(string $command, string $method = 'run'): Process
     {
-        if (in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
-            $process = Process::fromShellCommandline($command, null);
-        } else {
-            $process = Process::fromShellCommandline($command);
-        }
+        $process = Process::fromShellCommandline($command);
 
         $process->setTimeout(0);
 
