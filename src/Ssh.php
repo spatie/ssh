@@ -65,7 +65,6 @@ class Ssh
     public function useMultiplexing(string $controlPath, string $controlPersist = '10m'):self
     {
         $this->extraOptions['control_master'] = '-o ControlMaster=auto -o ControlPath=' . $controlPath . ' -o ControlPersist=' . $controlPersist;
-
         return $this;
     }
 
@@ -149,9 +148,13 @@ class Ssh
 
         $target = $this->getTarget();
 
-        return "ssh {$extraOptions} {$target} 'bash -se' << \\$delimiter".PHP_EOL
-            .$commandString.PHP_EOL
-            .$delimiter;
+        if (in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
+            return $commandString;
+        } else {
+            return "ssh {$extraOptions} {$target} 'bash -se' << \\$delimiter".PHP_EOL
+                        .$commandString.PHP_EOL
+                        .$delimiter;
+        }
     }
 
     /**
@@ -227,7 +230,11 @@ class Ssh
 
     protected function run(string $command, string $method = 'run'): Process
     {
-        $process = Process::fromShellCommandline($command);
+        if (in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
+            $process = Process::fromShellCommandline($command, null);
+        } else {
+            $process = Process::fromShellCommandline($command);
+        }
 
         $process->setTimeout(0);
 
