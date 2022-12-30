@@ -150,10 +150,11 @@ class Ssh
 
         if (in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
             return $commandString;
-        } else {
-            return "ssh {$extraOptions} {$target} 'bash -se' << \\$delimiter".PHP_EOL
-                        .$commandString.PHP_EOL
-                        .$delimiter;
+        } 
+            
+        return "ssh {$extraOptions} {$target} 'bash -se' << \\$delimiter".PHP_EOL
+                    .$commandString.PHP_EOL
+                    .$delimiter;
         }
     }
 
