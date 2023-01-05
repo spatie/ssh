@@ -20,8 +20,15 @@
         "symfony/process": "^4.4|^5.3|^6.0"
     },
     "require-dev": {
+<<<<<<< HEAD
         "pestphp/pest": "^1.22",
         "spatie/pest-plugin-snapshots": "^1.1",
+||||||| parent of 970df70 (install Pest)
+        "phpunit/phpunit": "^9.5",
+=======
+        "pestphp/pest": "^1.22",
+        "phpunit/phpunit": "^9.5",
+>>>>>>> 970df70 (install Pest)
         "spatie/phpunit-snapshot-assertions": "^4.2",
         "symfony/var-dumper": "^5.3|6.0"
     },
