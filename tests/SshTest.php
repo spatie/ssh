@@ -1,9 +1,9 @@
 <?php
 
-use Spatie\Ssh\Ssh;
-use Symfony\Component\Process\Process;
-
 use function Spatie\Snapshots\assertMatchesSnapshot;
+use Spatie\Ssh\Ssh;
+
+use Symfony\Component\Process\Process;
 
 uses(PHPUnit\Framework\TestCase::class);
 
