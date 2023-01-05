@@ -20,12 +20,16 @@
         "symfony/process": "^4.4|^5.3|^6.0"
     },
     "require-dev": {
+        "pestphp/pest": "^1.22",
         "phpunit/phpunit": "^9.5",
         "spatie/phpunit-snapshot-assertions": "^4.2",
         "symfony/var-dumper": "^5.3|6.0"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "autoload": {
         "psr-4": {
