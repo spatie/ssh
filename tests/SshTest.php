@@ -157,6 +157,6 @@ class SshTest extends TestCase
         $local = new Ssh('user', '127.0.0.1');
         $command = $local->execute('whoami');
 
-        Assert::assertEquals(trim($command->getOutput()), get_current_user());
+        $this->assertEquals(trim($command->getOutput()), get_current_user());
     }
 }
