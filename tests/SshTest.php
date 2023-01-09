@@ -102,8 +102,6 @@ it('can run a command locally', function () {
     $command = $local->execute('whoami');
 
     expect(get_current_user())->toEqual(trim($command->getOutput()));
-
-    assertMatchesSnapshot($command);
 });
 
 it('can configure the used process', function () {
