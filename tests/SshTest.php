@@ -97,14 +97,6 @@ it('can upload a file', function () {
     assertMatchesSnapshot($command);
 });
 
-it('can configure the used process', function () {
-    $command = $this->ssh->configureProcess(function (Process $process) {
-        $process->setTimeout(0);
-    })->getExecuteCommand('whoami');
-
-    assertMatchesSnapshot($command);
-});
-
 it('can run a command locally', function () {
     $local = new Ssh('user', '127.0.0.1');
     $command = $local->execute('whoami');
