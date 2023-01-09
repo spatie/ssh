@@ -2,6 +2,19 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.8.1 - 2023-01-09
+
+### What's Changed
+
+- Add PHP 8.2 Support by @patinthehat in https://github.com/spatie/ssh/pull/70
+- Running commands locally by @yob-yob in https://github.com/spatie/ssh/pull/71
+
+### New Contributors
+
+- @yob-yob made their first contribution in https://github.com/spatie/ssh/pull/71
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.8.0...1.8.1
+
 ## 1.8.0 - 2022-09-07
 
 ### What's Changed
