@@ -3,7 +3,6 @@
 namespace Spatie\Ssh\Tests;
 
 use Exception;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 use Spatie\Ssh\Ssh;
