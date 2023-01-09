@@ -45,7 +45,7 @@ class Ssh
         return $this;
     }
 
-    public function useJumpHost(string $jumpHost):self
+    public function useJumpHost(string $jumpHost): self
     {
         $this->extraOptions['jump_host'] = '-J ' . $jumpHost;
 
@@ -62,10 +62,9 @@ class Ssh
         return $this;
     }
 
-    public function useMultiplexing(string $controlPath, string $controlPersist = '10m'):self
+    public function useMultiplexing(string $controlPath, string $controlPersist = '10m'): self
     {
         $this->extraOptions['control_master'] = '-o ControlMaster=auto -o ControlPath=' . $controlPath . ' -o ControlPersist=' . $controlPersist;
-
         return $this;
     }
 
@@ -149,16 +148,20 @@ class Ssh
 
         $target = $this->getTarget();
 
+        if (in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
+            return $commandString;
+        }
+
         return "ssh {$extraOptions} {$target} 'bash -se' << \\$delimiter".PHP_EOL
-            .$commandString.PHP_EOL
-            .$delimiter;
+                    .$commandString.PHP_EOL
+                    .$delimiter;
     }
 
     /**
      * @param string|array $command
      *
      * @return \Symfony\Component\Process\Process
-     */
+     **/
     public function execute($command): Process
     {
         $sshCommand = $this->getExecuteCommand($command);

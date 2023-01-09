@@ -3,6 +3,7 @@
 namespace Spatie\Ssh\Tests;
 
 use Exception;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 use Spatie\Ssh\Ssh;
@@ -148,5 +149,14 @@ class SshTest extends TestCase
         })->getExecuteCommand('whoami');
 
         $this->assertMatchesSnapshot($command);
+    }
+
+    /** @test */
+    public function it_can_run_a_command_locally()
+    {
+        $local = new Ssh('user', '127.0.0.1');
+        $command = $local->execute('whoami');
+
+        $this->assertEquals(trim($command->getOutput()), get_current_user());
     }
 }
