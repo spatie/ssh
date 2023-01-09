@@ -1,161 +1,113 @@
 <?php
 
-namespace Spatie\Ssh\Tests;
-
-use Exception;
-use PHPUnit\Framework\TestCase;
-use Spatie\Snapshots\MatchesSnapshots;
+use function Spatie\Snapshots\assertMatchesSnapshot;
 use Spatie\Ssh\Ssh;
+
 use Symfony\Component\Process\Process;
 
-class SshTest extends TestCase
-{
-    use MatchesSnapshots;
+uses(PHPUnit\Framework\TestCase::class);
 
-    private Ssh $ssh;
+beforeEach(function () {
+    $this->ssh = (new Ssh('user', 'example.com'));
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
+it('can run a single command', function () {
+    $command = $this->ssh->getExecuteCommand('whoami');
 
-        $this->ssh = (new Ssh('user', 'example.com'));
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_run_a_single_command()
-    {
-        $command = $this->ssh->getExecuteCommand('whoami');
+it('can run multiple commands', function () {
+    $command = $this->ssh->getExecuteCommand(['whoami', 'cd /var/log']);
 
-        $this->assertMatchesSnapshot($command);
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_run_multiple_commands()
-    {
-        $command = $this->ssh->getExecuteCommand(['whoami', 'cd /var/log']);
+it('can use a specific private key', function () {
+    $command = $this->ssh->usePrivateKey('/home/user/.ssh/id_rsa')->getExecuteCommand('whoami');
 
-        $this->assertMatchesSnapshot($command);
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_use_a_specific_private_key()
-    {
-        $command = $this->ssh->usePrivateKey('/home/user/.ssh/id_rsa')->getExecuteCommand('whoami');
+it('can set the port via the constructor', function () {
+    $command = (new Ssh('user', 'example.com', 123))->getExecuteCommand('whoami');
 
-        $this->assertMatchesSnapshot($command);
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_set_the_port_via_the_constructor()
-    {
-        $command = (new Ssh('user', 'example.com', 123))->getExecuteCommand('whoami');
+it('can set the port via the dedicated function', function () {
+    $command = (new Ssh('user', 'example.com'))->usePort(123)->getExecuteCommand('whoami');
 
-        $this->assertMatchesSnapshot($command);
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_set_the_port_via_the_dedicated_function()
-    {
-        $command = (new Ssh('user', 'example.com'))->usePort(123)->getExecuteCommand('whoami');
+it('can set the multiplex path via the dedicated function', function () {
+    $command = (new Ssh('user', 'example.com'))->useMultiplexing('/home/test/control_masters/%C', '15m')->getExecuteCommand('whoami');
 
-        $this->assertMatchesSnapshot($command);
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_set_the_multiplex_path_via_the_dedicated_function()
-    {
-        $command = (new Ssh('user', 'example.com'))->useMultiplexing('/home/test/control_masters/%C', '15m')->getExecuteCommand('whoami');
+it('can instantiate via the create method')
+    ->expect(Ssh::create('user', 'example.com'))
+    ->toBeInstanceOf(Ssh::class);
 
-        $this->assertMatchesSnapshot($command);
-    }
+it('can enable strict host checking', function () {
+    $command = (new Ssh('user', 'example.com'))->enableStrictHostKeyChecking()->getExecuteCommand('whoami');
 
-    /** @test */
-    public function it_can_instantiate_via_the_create_method()
-    {
-        $this->assertInstanceOf(Ssh::class, Ssh::create('user', 'example.com'));
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_enable_strict_host_checking()
-    {
-        $command = (new Ssh('user', 'example.com'))->enableStrictHostKeyChecking()->getExecuteCommand('whoami');
+it('can enable quiet mode', function () {
+    $command = (new Ssh('user', 'example.com'))->enableQuietMode()->getExecuteCommand('whoami');
 
-        $this->assertMatchesSnapshot($command);
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_enable_quiet_mode()
-    {
-        $command = (new Ssh('user', 'example.com'))->enableQuietMode()->getExecuteCommand('whoami');
+it('can disable password authentication', function () {
+    $command = (new Ssh('user', 'example.com'))->disablePasswordAuthentication()->getExecuteCommand('whoami');
 
-        $this->assertMatchesSnapshot($command);
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_disable_password_authentication()
-    {
-        $command = (new Ssh('user', 'example.com'))->disablePasswordAuthentication()->getExecuteCommand('whoami');
+it('it can enable password authentication', function () {
+    $command = (new Ssh('user', 'example.com'))->enablePasswordAuthentication()->getExecuteCommand('whoami');
 
-        $this->assertMatchesSnapshot($command);
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function it_can_enable_password_authentication()
-    {
-        $command = (new Ssh('user', 'example.com'))->enablePasswordAuthentication()->getExecuteCommand('whoami');
+test('zero is a valid port number', function () {
+    $command = (new Ssh('user', 'example.com'))->usePort(0)->getExecuteCommand('whoami');
 
-        $this->assertMatchesSnapshot($command);
-    }
+    assertMatchesSnapshot($command);
+});
 
-    /** @test */
-    public function zero_is_a_valid_port_number()
-    {
-        $command = (new Ssh('user', 'example.com'))->usePort(0)->getExecuteCommand('whoami');
+it('throws an exception if a port is negative')
+    ->tap(fn () => (new Ssh('user', 'example.com'))->usePort(-45)->getExecuteCommand('whoami'))
+    ->throws(Exception::class, 'Port must be a positive integer.');
 
-        $this->assertMatchesSnapshot($command);
-    }
+it('can download a file', function () {
+    $command = $this->ssh->getDownloadCommand('spatie.be/current/.env', '.env');
 
-    /** @test */
-    public function it_throws_an_exception_if_a_port_is_negative()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Port must be a positive integer.');
+    assertMatchesSnapshot($command);
+});
 
-        $command = (new Ssh('user', 'example.com'))->usePort(-45)->getExecuteCommand('whoami');
-    }
+it('can upload a file', function () {
+    $command = $this->ssh->getUploadCommand('.env', 'spatie.be/current/.env');
 
-    /** @test */
-    public function it_can_download_a_file()
-    {
-        $command = $this->ssh->getDownloadCommand('spatie.be/current/.env', '.env');
+    assertMatchesSnapshot($command);
+});
 
-        $this->assertMatchesSnapshot($command);
-    }
+it('can run a command locally', function () {
+    $local = new Ssh('user', '127.0.0.1');
+    $command = $local->execute('whoami');
 
-    /** @test */
-    public function it_can_upload_a_file()
-    {
-        $command = $this->ssh->getUploadCommand('.env', 'spatie.be/current/.env');
+    expect(get_current_user())->toEqual(trim($command->getOutput()));
+});
 
-        $this->assertMatchesSnapshot($command);
-    }
+it('can configure the used process', function () {
+    $command = $this->ssh->configureProcess(function (Process $process) {
+        $process->setTimeout(0);
+    })->getExecuteCommand('whoami');
 
-    /** @test */
-    public function it_can_configure_the_used_process()
-    {
-        $command = $this->ssh->configureProcess(function (Process $process) {
-            $process->setTimeout(0);
-        })->getExecuteCommand('whoami');
-
-        $this->assertMatchesSnapshot($command);
-    }
-
-    /** @test */
-    public function it_can_run_a_command_locally()
-    {
-        $local = new Ssh('user', '127.0.0.1');
-        $command = $local->execute('whoami');
-
-        $this->assertEquals(trim($command->getOutput()), get_current_user());
-    }
-}
+    assertMatchesSnapshot($command);
+});

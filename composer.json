@@ -20,12 +20,15 @@
         "symfony/process": "^4.4|^5.3|^6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5",
-        "spatie/phpunit-snapshot-assertions": "^4.2",
+        "pestphp/pest": "^1.22",
+        "spatie/pest-plugin-snapshots": "^1.1",
         "symfony/var-dumper": "^5.3|6.0"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "autoload": {
         "psr-4": {
@@ -38,7 +41,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage-html coverage"
     }
 }
