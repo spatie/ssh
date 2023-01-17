@@ -2,6 +2,20 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.8.2 - 2023-01-17
+
+### What's Changed
+
+- Convert all tests to pest by @alexmanase in https://github.com/spatie/ssh/pull/72
+- add ipv6 support for command execute and file upload by @bomas13 in https://github.com/spatie/ssh/pull/73
+
+### New Contributors
+
+- @alexmanase made their first contribution in https://github.com/spatie/ssh/pull/72
+- @bomas13 made their first contribution in https://github.com/spatie/ssh/pull/73
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.8.1...1.8.2
+
 ## 1.8.1 - 2023-01-09
 
 ### What's Changed
