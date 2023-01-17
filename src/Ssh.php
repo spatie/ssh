@@ -147,7 +147,7 @@ class Ssh
 
         $delimiter = 'EOF-SPATIE-SSH';
 
-        $target = $this->getTarget();
+        $target = $this->getTargetForSsh();
 
         if (in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
             return $commandString;
@@ -184,7 +184,7 @@ class Ssh
 
     public function getDownloadCommand(string $sourcePath, string $destinationPath): string
     {
-        return "scp {$this->getExtraScpOptions()} {$this->getTarget()}:$sourcePath $destinationPath";
+        return "scp {$this->getExtraScpOptions()} {$this->getTargetForScp()}:$sourcePath $destinationPath";
     }
 
     public function download(string $sourcePath, string $destinationPath): Process
@@ -196,7 +196,7 @@ class Ssh
 
     public function getUploadCommand(string $sourcePath, string $destinationPath): string
     {
-        return "scp {$this->getExtraScpOptions()} $sourcePath {$this->getTarget()}:$destinationPath";
+        return "scp {$this->getExtraScpOptions()} $sourcePath {$this->getTargetForScp()}:$destinationPath";
     }
 
     public function upload(string $sourcePath, string $destinationPath): Process
@@ -242,7 +242,14 @@ class Ssh
         return $process;
     }
 
-    protected function getTarget(): string
+    protected function getTargetForScp(): string
+    {
+        $host = filter_var($this->host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? '[' . $this->host . ']' : $this->host;
+
+        return "{$this->user}@{$host}";
+    }
+
+    protected function getTargetForSsh(): string
     {
         return "{$this->user}@{$this->host}";
     }

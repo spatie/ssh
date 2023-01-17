@@ -1,0 +1,1 @@
+scp -r .env user@127.0.0.2:spatie.be/current/.env
