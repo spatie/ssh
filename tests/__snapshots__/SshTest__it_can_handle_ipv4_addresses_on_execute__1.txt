@@ -1,0 +1,3 @@
+ssh  user@127.0.0.2 'bash -se' << \EOF-SPATIE-SSH
+whoami
+EOF-SPATIE-SSH
