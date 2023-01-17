@@ -112,28 +112,28 @@ it('can configure the used process', function () {
     assertMatchesSnapshot($command);
 });
 
-it('can handle ipv4 addresses on execute', function() {
+it('can handle ipv4 addresses on execute', function () {
     $local = new Ssh('user', '127.0.0.2');
     $command = $local->getExecuteCommand('whoami');
 
     assertMatchesSnapshot($command);
 });
 
-it('can handle ipv4 addresses on upload', function() {
+it('can handle ipv4 addresses on upload', function () {
     $local = new Ssh('user', '127.0.0.2');
     $command = $local->getUploadCommand('.env', 'spatie.be/current/.env');
 
     assertMatchesSnapshot($command);
 });
 
-it('can handle ipv6 addresses on execute', function() {
+it('can handle ipv6 addresses on execute', function () {
     $local = new Ssh('user', '::1');
     $command = $local->getExecuteCommand('whoami');
 
     assertMatchesSnapshot($command);
 });
 
-it('can handle ipv6 addresses on upload', function() {
+it('can handle ipv6 addresses on upload', function () {
     $local = new Ssh('user', '::1');
     $command = $local->getUploadCommand('.env', 'spatie.be/current/.env');
 
