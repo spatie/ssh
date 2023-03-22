@@ -172,7 +172,7 @@ Ssh::create('user', 'host')->configureProcess(fn (Process $process) => $process-
 You can get notified whenever your command produces output by passing a closure to `onOutput`. 
 
 ```php
-Ssh::create('user', 'host')->onOutput(fn($type, $line) => echo $line)->execute('whoami');
+Ssh::create('user', 'host')->onOutput(function($type, $line) {echo $line;})->execute('whoami');
 ```
 
 Whenever there is output that closure will get called with two parameters:
