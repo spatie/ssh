@@ -14,7 +14,7 @@ class Ssh
 
     protected array $extraOptions = [];
 
-    protected bool $removeBash;
+    protected bool $addBash;
 
     protected Closure $processConfigurationClosure;
 
@@ -30,7 +30,7 @@ class Ssh
             $this->usePort($port);
         }
 
-        $this->removeBash = false;
+        $this->addBash = true;
 
         $this->processConfigurationClosure = fn (Process $process) => null;
 
@@ -138,7 +138,7 @@ class Ssh
 
     public function removeBash(): self
     {
-        $this->removeBash = true;
+        $this->addBash = false;
 
         return $this;
     }
@@ -164,7 +164,7 @@ class Ssh
             return $commandString;
         }
 
-        $bash = $this->removeBash ? '' : "'bash -se'";
+        $bash = $this->addBash ? "'bash -se'" : '';
 
         return "ssh {$extraOptions} {$target} {$bash} << \\$delimiter".PHP_EOL
                     .$commandString.PHP_EOL
