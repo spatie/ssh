@@ -1,0 +1,3 @@
+ssh  user@example.com  << \EOF-SPATIE-SSH
+whoami
+EOF-SPATIE-SSH
