@@ -179,6 +179,14 @@ Whenever there is output that closure will get called with two parameters:
 - `type`: this can be `Symfony\Component\Process\Process::OUT` for regular output and `Symfony\Component\Process\Process::ERR` for error output
 - `line`: the output itself
 
+### Windows Target 
+
+If your target is a Windows machine, you can use the `removeBash` method to remove the bash command from the command line.
+
+```php
+Ssh::create('user', 'host')->removeBash();
+```
+
 ## Testing
 
 ``` bash

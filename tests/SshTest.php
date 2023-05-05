@@ -139,3 +139,9 @@ it('can handle ipv6 addresses on upload', function () {
 
     assertMatchesSnapshot($command);
 });
+
+it('can remove bash command', function () {
+    $command = $this->ssh->removeBash()->getExecuteCommand('whoami');
+
+    assertMatchesSnapshot($command);
+});
