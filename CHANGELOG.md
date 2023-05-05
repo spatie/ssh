@@ -2,6 +2,20 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.8.3 - 2023-05-05
+
+### What's Changed
+
+- Update README.md by @undersound in https://github.com/spatie/ssh/pull/76
+- Add option to remove bash in command by @ebulku in https://github.com/spatie/ssh/pull/79
+
+### New Contributors
+
+- @undersound made their first contribution in https://github.com/spatie/ssh/pull/76
+- @ebulku made their first contribution in https://github.com/spatie/ssh/pull/79
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.8.2...1.8.3
+
 ## 1.8.2 - 2023-01-17
 
 ### What's Changed
