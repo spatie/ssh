@@ -246,7 +246,7 @@ class Ssh
     {
         $process = Process::fromShellCommandline($command);
 
-        $process->setTimeout(0);
+        $process->setTimeout($this->extraOptions['timeout'] ?? 0);
 
         ($this->processConfigurationClosure)($process);
 
@@ -266,4 +266,17 @@ class Ssh
     {
         return "{$this->user}@{$this->host}";
     }
+    /**
+     * set timeout for the command
+     *
+     * @param integer $timeout
+     * @return self
+     */
+    public function setTimeout(int $timeout): self
+    {
+        $this->extraOptions['timeout'] = $timeout;
+
+        return $this;
+    }
+
 }

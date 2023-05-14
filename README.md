@@ -86,6 +86,14 @@ Alternatively you can use the `usePort` function:
 ```php
 Ssh::create('user', 'host')->usePort($port);
 ```
+### Setting a timeout
+
+You can set a timeout for the command.
+
+
+```php
+Ssh::create('user', 'host')->setTimeout(100);
+```
 
 ### Specifying a jump host
 
