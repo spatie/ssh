@@ -93,6 +93,13 @@ class Ssh
 
         return $this;
     }
+    
+    public function setTimeout(int $timeout): self
+    {
+        $this->extraOptions['timeout'] = $timeout;
+
+        return $this;
+    }
 
     public function disableStrictHostKeyChecking(): self
     {
@@ -246,7 +253,7 @@ class Ssh
     {
         $process = Process::fromShellCommandline($command);
 
-        $process->setTimeout(0);
+        $process->setTimeout($this->extraOptions['timeout'] ?? 0);
 
         ($this->processConfigurationClosure)($process);
 
@@ -266,4 +273,7 @@ class Ssh
     {
         return "{$this->user}@{$this->host}";
     }
+
+    
+
 }
