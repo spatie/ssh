@@ -2,6 +2,18 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.9.0 - 2023-05-15
+
+### What's Changed
+
+- set timeout by @tal7aouy in https://github.com/spatie/ssh/pull/82
+
+### New Contributors
+
+- @tal7aouy made their first contribution in https://github.com/spatie/ssh/pull/82
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.8.3...1.9.0
+
 ## 1.8.3 - 2023-05-05
 
 ### What's Changed
