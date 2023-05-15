@@ -93,6 +93,13 @@ class Ssh
 
         return $this;
     }
+    
+    public function setTimeout(int $timeout): self
+    {
+        $this->extraOptions['timeout'] = $timeout;
+
+        return $this;
+    }
 
     public function disableStrictHostKeyChecking(): self
     {
@@ -266,17 +273,7 @@ class Ssh
     {
         return "{$this->user}@{$this->host}";
     }
-    /**
-     * set timeout for the command
-     *
-     * @param integer $timeout
-     * @return self
-     */
-    public function setTimeout(int $timeout): self
-    {
-        $this->extraOptions['timeout'] = $timeout;
 
-        return $this;
-    }
+    
 
 }
