@@ -93,7 +93,7 @@ class Ssh
 
         return $this;
     }
-    
+
     public function setTimeout(int $timeout): self
     {
         $this->extraOptions['timeout'] = $timeout;
@@ -241,7 +241,10 @@ class Ssh
 
     private function getExtraOptions(): array
     {
-        return array_values($this->extraOptions);
+        // Removed timeout from extra options; it's only used as a value for Symfony\Process, not as an SSH option
+        $extraOptions = array_filter($this->extraOptions, fn($key) => $key !== 'timeout', ARRAY_FILTER_USE_KEY);
+
+        return array_values($extraOptions);
     }
 
     protected function wrapArray($arrayOrString): array
@@ -273,7 +276,4 @@ class Ssh
     {
         return "{$this->user}@{$this->host}";
     }
-
-    
-
 }

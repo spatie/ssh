@@ -145,3 +145,9 @@ it('can remove bash command', function () {
 
     assertMatchesSnapshot($command);
 });
+
+it('does not alter ssh command when setting timeout', function () {
+    $command = $this->ssh->setTimeout(10)->getExecuteCommand('whoami');
+
+    assertMatchesSnapshot($command);
+});
