@@ -2,6 +2,18 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.9.1 - 2023-06-17
+
+### What's Changed
+
+- Fix: Setting timeout created invalid SSH command by @iPwnPancakes in https://github.com/spatie/ssh/pull/87
+
+### New Contributors
+
+- @iPwnPancakes made their first contribution in https://github.com/spatie/ssh/pull/87
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.9.0...1.9.1
+
 ## 1.9.0 - 2023-05-15
 
 ### What's Changed
