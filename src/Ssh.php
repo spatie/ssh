@@ -242,7 +242,7 @@ class Ssh
     private function getExtraOptions(): array
     {
         // Removed timeout from extra options; it's only used as a value for Symfony\Process, not as an SSH option
-        $extraOptions = array_filter($this->extraOptions, fn($key) => $key !== 'timeout', ARRAY_FILTER_USE_KEY);
+        $extraOptions = array_filter($this->extraOptions, fn ($key) => $key !== 'timeout', ARRAY_FILTER_USE_KEY);
 
         return array_values($extraOptions);
     }
