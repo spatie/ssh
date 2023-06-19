@@ -20,6 +20,8 @@ class Ssh
 
     protected Closure $onOutput;
 
+    private int $timeout = 0;
+
     public function __construct(string $user, string $host, int $port = null)
     {
         $this->user = $user;
@@ -96,7 +98,7 @@ class Ssh
 
     public function setTimeout(int $timeout): self
     {
-        $this->extraOptions['timeout'] = $timeout;
+        $this->timeout = $timeout;
 
         return $this;
     }
@@ -241,10 +243,7 @@ class Ssh
 
     protected function getExtraOptions(): array
     {
-        // Removed timeout from extra options; it's only used as a value for Symfony\Process, not as an SSH option
-        $extraOptions = array_filter($this->extraOptions, fn ($key) => $key !== 'timeout', ARRAY_FILTER_USE_KEY);
-
-        return array_values($extraOptions);
+        return array_values($this->extraOptions);
     }
 
     protected function wrapArray($arrayOrString): array
@@ -256,7 +255,7 @@ class Ssh
     {
         $process = Process::fromShellCommandline($command);
 
-        $process->setTimeout($this->extraOptions['timeout'] ?? 0);
+        $process->setTimeout($this->timeout);
 
         ($this->processConfigurationClosure)($process);
 

@@ -151,3 +151,9 @@ it('does not alter ssh command when setting timeout', function () {
 
     assertMatchesSnapshot($command);
 });
+
+it('does not alter scp command when setting timeout', function () {
+    $command = $this->ssh->setTimeout(10)->getUploadCommand('.env', 'spatie.be/current/.env');
+
+    assertMatchesSnapshot($command);
+});
