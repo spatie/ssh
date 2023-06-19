@@ -2,6 +2,14 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.9.2 - 2023-06-19
+
+### What's Changed
+
+- Fix: Setting timeout causes scp commands to fail by @iPwnPancakes in https://github.com/spatie/ssh/pull/89
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.9.1...1.9.2
+
 ## 1.9.1 - 2023-06-17
 
 ### What's Changed
