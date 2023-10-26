@@ -39,26 +39,26 @@ class Ssh
         $this->onOutput = fn ($type, $line) => null;
     }
 
-    public static function create(...$args): self
+    public static function create(...$args): static
     {
         return new static(...$args);
     }
 
-    public function usePrivateKey(string $pathToPrivateKey): self
+    public function usePrivateKey(string $pathToPrivateKey): static
     {
         $this->extraOptions['private_key'] = '-i ' . $pathToPrivateKey;
 
         return $this;
     }
 
-    public function useJumpHost(string $jumpHost): self
+    public function useJumpHost(string $jumpHost): static
     {
         $this->extraOptions['jump_host'] = '-J ' . $jumpHost;
 
         return $this;
     }
 
-    public function usePort(int $port): self
+    public function usePort(int $port): static
     {
         if ($port < 0) {
             throw new Exception('Port must be a positive integer.');
@@ -68,84 +68,84 @@ class Ssh
         return $this;
     }
 
-    public function useMultiplexing(string $controlPath, string $controlPersist = '10m'): self
+    public function useMultiplexing(string $controlPath, string $controlPersist = '10m'): static
     {
         $this->extraOptions['control_master'] = '-o ControlMaster=auto -o ControlPath=' . $controlPath . ' -o ControlPersist=' . $controlPersist;
 
         return $this;
     }
 
-    public function configureProcess(Closure $processConfigurationClosure): self
+    public function configureProcess(Closure $processConfigurationClosure): static
     {
         $this->processConfigurationClosure = $processConfigurationClosure;
 
         return $this;
     }
 
-    public function onOutput(Closure $onOutput): self
+    public function onOutput(Closure $onOutput): static
     {
         $this->onOutput = $onOutput;
 
         return $this;
     }
 
-    public function enableStrictHostKeyChecking(): self
+    public function enableStrictHostKeyChecking(): static
     {
         unset($this->extraOptions['enable_strict_check']);
 
         return $this;
     }
 
-    public function setTimeout(int $timeout): self
+    public function setTimeout(int $timeout): static
     {
         $this->timeout = $timeout;
 
         return $this;
     }
 
-    public function disableStrictHostKeyChecking(): self
+    public function disableStrictHostKeyChecking(): static
     {
         $this->extraOptions['enable_strict_check'] = '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null';
 
         return $this;
     }
 
-    public function enableQuietMode(): self
+    public function enableQuietMode(): static
     {
         $this->extraOptions['quiet'] = '-q';
 
         return $this;
     }
 
-    public function disableQuietMode(): self
+    public function disableQuietMode(): static
     {
         unset($this->extraOptions['quiet']);
 
         return $this;
     }
 
-    public function disablePasswordAuthentication(): self
+    public function disablePasswordAuthentication(): static
     {
         $this->extraOptions['password_authentication'] = '-o PasswordAuthentication=no';
 
         return $this;
     }
 
-    public function enablePasswordAuthentication(): self
+    public function enablePasswordAuthentication(): static
     {
         unset($this->extraOptions['password_authentication']);
 
         return $this;
     }
 
-    public function addExtraOption(string $option): self
+    public function addExtraOption(string $option): static
     {
         $this->extraOptions[] = $option;
 
         return $this;
     }
 
-    public function removeBash(): self
+    public function removeBash(): static
     {
         $this->addBash = false;
 
