@@ -2,6 +2,18 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.10.0 - 2024-02-21
+
+### What's Changed
+
+* Allow Symfony 7.x by @thecaliskan in https://github.com/spatie/ssh/pull/93
+
+### New Contributors
+
+* @thecaliskan made their first contribution in https://github.com/spatie/ssh/pull/93
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.9.2...1.10.0
+
 ## 1.9.2 - 2023-06-19
 
 ### What's Changed
