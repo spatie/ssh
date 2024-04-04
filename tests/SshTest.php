@@ -157,3 +157,10 @@ it('does not alter scp command when setting timeout', function () {
 
     assertMatchesSnapshot($command);
 });
+
+it('can login without user', function () {
+    $ssh = new Ssh(null, 'example.com');
+    $command = $ssh->getExecuteCommand('whoami');
+
+    assertMatchesSnapshot($command);
+});
