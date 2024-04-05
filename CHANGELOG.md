@@ -2,6 +2,18 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.10.1 - 2024-04-05
+
+### What's Changed
+
+* Allow SSH connection without user by @pyrech in https://github.com/spatie/ssh/pull/98
+
+### New Contributors
+
+* @pyrech made their first contribution in https://github.com/spatie/ssh/pull/98
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.10.0...1.10.1
+
 ## 1.10.0 - 2024-02-21
 
 ### What's Changed
