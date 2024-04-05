@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 
 class Ssh
 {
-    protected string $user;
+    protected ?string $user = null;
 
     protected string $host;
 
@@ -22,7 +22,7 @@ class Ssh
 
     private int $timeout = 0;
 
-    public function __construct(string $user, string $host, int $port = null)
+    public function __construct(?string $user, string $host, int $port = null)
     {
         $this->user = $user;
 
@@ -268,11 +268,19 @@ class Ssh
     {
         $host = filter_var($this->host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? '[' . $this->host . ']' : $this->host;
 
+        if ($this->user === null) {
+            return $host;
+        }
+
         return "{$this->user}@{$host}";
     }
 
     protected function getTargetForSsh(): string
     {
+        if ($this->user === null) {
+            return $this->host;
+        }
+
         return "{$this->user}@{$this->host}";
     }
 }
