@@ -21,8 +21,9 @@ class Ssh
     protected Closure $onOutput;
 
     private int $timeout = 0;
+    protected ?string $password = null;
 
-    public function __construct(?string $user, string $host, int $port = null)
+    public function __construct(?string $user, string $host, int $port = null, ?string $password = null)
     {
         $this->user = $user;
 
@@ -31,6 +32,8 @@ class Ssh
         if ($port !== null) {
             $this->usePort($port);
         }
+
+        $this->password = $password;
 
         $this->addBash = true;
 
@@ -152,6 +155,14 @@ class Ssh
         return $this;
     }
 
+    protected function getPasswordCommand(): string
+    {
+        if ($this->password !== null) {
+            return 'sshpass -p \'' . $this->password . '\' ';
+        }
+        return '';
+    }
+
     /**
      * @param string|array $command
      *
@@ -173,9 +184,10 @@ class Ssh
             return $commandString;
         }
 
+        $passwordCommand = $this->getPasswordCommand();
         $bash = $this->addBash ? "'bash -se'" : '';
 
-        return "ssh {$extraOptions} {$target} {$bash} << \\$delimiter".PHP_EOL
+        return "{$passwordCommand}ssh {$extraOptions} {$target} {$bash} << \\$delimiter".PHP_EOL
                     .$commandString.PHP_EOL
                     .$delimiter;
     }
@@ -206,7 +218,8 @@ class Ssh
 
     public function getDownloadCommand(string $sourcePath, string $destinationPath): string
     {
-        return "scp {$this->getExtraScpOptions()} {$this->getTargetForScp()}:$sourcePath $destinationPath";
+        $passwordCommand = $this->getPasswordCommand();
+        return "{$passwordCommand}scp {$this->getExtraScpOptions()} {$this->getTargetForScp()}:$sourcePath $destinationPath";
     }
 
     public function download(string $sourcePath, string $destinationPath): Process
@@ -218,7 +231,8 @@ class Ssh
 
     public function getUploadCommand(string $sourcePath, string $destinationPath): string
     {
-        return "scp {$this->getExtraScpOptions()} $sourcePath {$this->getTargetForScp()}:$destinationPath";
+        $passwordCommand = $this->getPasswordCommand();
+        return "{$passwordCommand}scp {$this->getExtraScpOptions()} $sourcePath {$this->getTargetForScp()}:$destinationPath";
     }
 
     public function upload(string $sourcePath, string $destinationPath): Process
