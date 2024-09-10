@@ -86,6 +86,21 @@ Alternatively you can use the `usePort` function:
 ```php
 Ssh::create('user', 'host')->usePort($port);
 ```
+
+### Using a password
+
+You can use the constructor to specify a password to use.
+
+```php
+Ssh::create('user', 'host', port, 'password');
+```
+
+Alternatively you can use the `usePassword` function:
+
+```php
+Ssh::create('user', 'host')->usePassword('password');
+```
+
 ### Setting a timeout
 
 You can set a timeout for the command.
