@@ -171,3 +171,10 @@ it('can login with a password', function () {
 
     assertMatchesSnapshot($command);
 });
+
+it('can login with a password failed', function () {
+    $ssh = new Ssh('user', 'example.com', 22, 'wrong_password');
+    $command = $ssh->getExecuteCommand('whoami');
+
+    assertMatchesSnapshot($command);
+});
