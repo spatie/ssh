@@ -1,5 +1,5 @@
 {
-    "name": "shaunluedeke/ssh",
+    "name": "spatie/ssh",
     "description": "A lightweight package to execute commands over an SSH connection",
     "keywords": [
         "spatie",
