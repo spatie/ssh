@@ -161,17 +161,17 @@ class Ssh
     {
         $commands = $this->wrapArray($command);
 
-        $extraOptions = implode(' ', $this->getExtraOptions());
-
         $commandString = implode(PHP_EOL, $commands);
-
-        $delimiter = 'EOF-SPATIE-SSH';
-
-        $target = $this->getTargetForSsh();
 
         if (in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
             return $commandString;
         }
+
+        $extraOptions = implode(' ', $this->getExtraOptions());
+
+        $target = $this->getTargetForSsh();
+
+        $delimiter = 'EOF-SPATIE-SSH';
 
         $bash = $this->addBash ? "'bash -se'" : '';
 
