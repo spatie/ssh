@@ -21,6 +21,7 @@ class Ssh
     protected Closure $onOutput;
 
     private int $timeout = 0;
+
     protected ?string $password = null;
 
     public function __construct(?string $user, string $host, int $port = null, ?string $password = null)
@@ -67,6 +68,13 @@ class Ssh
             throw new Exception('Port must be a positive integer.');
         }
         $this->extraOptions['port'] = '-p ' . $port;
+
+        return $this;
+    }
+
+    public function usePassword(?string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }
@@ -172,24 +180,24 @@ class Ssh
     {
         $commands = $this->wrapArray($command);
 
-        $extraOptions = implode(' ', $this->getExtraOptions());
-
         $commandString = implode(PHP_EOL, $commands);
-
-        $delimiter = 'EOF-SPATIE-SSH';
-
-        $target = $this->getTargetForSsh();
 
         if (in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
             return $commandString;
         }
 
         $passwordCommand = $this->getPasswordCommand();
+        $extraOptions = implode(' ', $this->getExtraOptions());
+
+        $target = $this->getTargetForSsh();
+
+        $delimiter = 'EOF-SPATIE-SSH';
+
         $bash = $this->addBash ? "'bash -se'" : '';
 
         return "{$passwordCommand}ssh {$extraOptions} {$target} {$bash} << \\$delimiter".PHP_EOL
-                    .$commandString.PHP_EOL
-                    .$delimiter;
+            .$commandString.PHP_EOL
+            .$delimiter;
     }
 
     /**

@@ -2,6 +2,18 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.11.0 - 2024-10-18
+
+### What's Changed
+
+* Update Ssh.php by @leevigraham in https://github.com/spatie/ssh/pull/104
+
+### New Contributors
+
+* @leevigraham made their first contribution in https://github.com/spatie/ssh/pull/104
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.10.1...1.11.0
+
 ## 1.10.1 - 2024-04-05
 
 ### What's Changed
