@@ -164,3 +164,17 @@ it('can login without user', function () {
 
     assertMatchesSnapshot($command);
 });
+
+it('can login with a password', function () {
+    $ssh = new Ssh('user', 'example.com', 22, 'password');
+    $command = $ssh->getExecuteCommand('whoami');
+
+    assertMatchesSnapshot($command);
+});
+
+it('can login with a password failed', function () {
+    $ssh = new Ssh('user', 'example.com', 22, 'wrong_password');
+    $command = $ssh->getExecuteCommand('whoami');
+
+    assertMatchesSnapshot($command);
+});
