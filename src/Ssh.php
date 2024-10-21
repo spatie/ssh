@@ -22,7 +22,7 @@ class Ssh
 
     private int $timeout = 0;
 
-    public function __construct(?string $user, string $host, int $port = null)
+    public function __construct(?string $user, string $host, ?int $port = null)
     {
         $this->user = $user;
 

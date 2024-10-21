@@ -2,6 +2,10 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## Unreleased
+
+* Add support for PHP 8.4
+
 ## 1.11.0 - 2024-10-18
 
 ### What's Changed
