@@ -2,6 +2,18 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.12.0 - 2024-11-07
+
+### What's Changed
+
+* Add support for PHP 8.4 by @lyrixx in https://github.com/spatie/ssh/pull/106
+
+### New Contributors
+
+* @lyrixx made their first contribution in https://github.com/spatie/ssh/pull/106
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.11.0...1.12.0
+
 ## Unreleased
 
 * Add support for PHP 8.4
