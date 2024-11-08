@@ -16,6 +16,8 @@ class Ssh
 
     protected bool $addBash;
 
+    protected bool $allowLocalConnection = false;
+
     protected Closure $processConfigurationClosure;
 
     protected Closure $onOutput;
@@ -138,6 +140,13 @@ class Ssh
         return $this;
     }
 
+    public function allowLocalConnection(): self
+    {
+        $this->allowLocalConnection = true;
+
+        return $this;
+    }
+
     public function addExtraOption(string $option): self
     {
         $this->extraOptions[] = $option;
@@ -169,7 +178,8 @@ class Ssh
 
         $target = $this->getTargetForSsh();
 
-        if (in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
+        // Unless local SSH connections are allowed, execute command locally
+        if (!$this->allowLocalConnection && in_array($this->host, ['local', 'localhost', '127.0.0.1'])) {
             return $commandString;
         }
 
