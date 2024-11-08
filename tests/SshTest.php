@@ -104,6 +104,14 @@ it('can run a command locally', function () {
     expect(get_current_user())->toEqual(trim($command->getOutput()));
 });
 
+it('can run a remote command even locally', function () {
+    $local = new Ssh('user', '127.0.0.1');
+    $local->allowLocalConnection();
+
+    $command = $this->ssh->getExecuteCommand('whoami');
+    assertMatchesSnapshot($command);
+});
+
 it('can configure the used process', function () {
     $command = $this->ssh->configureProcess(function (Process $process) {
         $process->setTimeout(0);
