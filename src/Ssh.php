@@ -24,7 +24,7 @@ class Ssh
 
     protected ?string $password = null;
 
-    public function __construct(?string $user, string $host, int $port = null, ?string $password = null)
+    public function __construct(?string $user, string $host, ?int $port = null, ?string $password = null)
     {
         $this->user = $user;
 
