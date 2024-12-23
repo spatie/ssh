@@ -168,6 +168,7 @@ class Ssh
         if ($this->password !== null) {
             return 'sshpass -p \'' . $this->password . '\' ';
         }
+
         return '';
     }
 
@@ -227,6 +228,7 @@ class Ssh
     public function getDownloadCommand(string $sourcePath, string $destinationPath): string
     {
         $passwordCommand = $this->getPasswordCommand();
+
         return "{$passwordCommand}scp {$this->getExtraScpOptions()} {$this->getTargetForScp()}:$sourcePath $destinationPath";
     }
 
@@ -240,6 +242,7 @@ class Ssh
     public function getUploadCommand(string $sourcePath, string $destinationPath): string
     {
         $passwordCommand = $this->getPasswordCommand();
+
         return "{$passwordCommand}scp {$this->getExtraScpOptions()} $sourcePath {$this->getTargetForScp()}:$destinationPath";
     }
 
