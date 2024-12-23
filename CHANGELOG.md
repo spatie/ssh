@@ -2,6 +2,18 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.13.0 - 2024-12-23
+
+### What's Changed
+
+* Add password authentication support for SSH by @shaunluedeke in https://github.com/spatie/ssh/pull/103
+
+### New Contributors
+
+* @shaunluedeke made their first contribution in https://github.com/spatie/ssh/pull/103
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.12.0...1.13.0
+
 ## 1.12.0 - 2024-11-07
 
 ### What's Changed
