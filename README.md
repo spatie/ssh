@@ -101,6 +101,8 @@ Alternatively you can use the `usePassword` function:
 Ssh::create('user', 'host')->usePassword('password');
 ```
 
+Please make sure to have the `sshpass` package installed on the local system, otherwise it will silently fail.
+
 ### Setting a timeout
 
 You can set a timeout for the command.
