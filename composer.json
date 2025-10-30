@@ -22,7 +22,7 @@
     "require-dev": {
         "pestphp/pest": "^1.22",
         "spatie/pest-plugin-snapshots": "^1.1",
-        "symfony/var-dumper": "^5.3||6.0||^7.0 || ^6.0 || ^8.0"
+        "symfony/var-dumper": "^5.3||^6.0||^7.0 || ^8.0"
     },
     "config": {
         "sort-packages": true,
