@@ -2,6 +2,21 @@
 
 All notable changes to `ssh` will be documented in this file
 
+## 1.13.1 - 2025-11-23
+
+### What's Changed
+
+* Update README.md with sshpass requirements on usePassword usage by @ilbuonmarcio in https://github.com/spatie/ssh/pull/117
+* Update issue template by @AlexVanderbist in https://github.com/spatie/ssh/pull/118
+* Added Symfony 8 support to all symfony/* packages. by @thecaliskan in https://github.com/spatie/ssh/pull/122
+
+### New Contributors
+
+* @ilbuonmarcio made their first contribution in https://github.com/spatie/ssh/pull/117
+* @AlexVanderbist made their first contribution in https://github.com/spatie/ssh/pull/118
+
+**Full Changelog**: https://github.com/spatie/ssh/compare/1.13.0...1.13.1
+
 ## 1.13.0 - 2024-12-23
 
 ### What's Changed
