@@ -20,8 +20,8 @@
         "symfony/process": "^4.4|^5.3|^6.0|^7.0|^8.0"
     },
     "require-dev": {
-        "pestphp/pest": "^1.22",
-        "spatie/pest-plugin-snapshots": "^1.1",
+        "pestphp/pest": "^5.3",
+        "spatie/pest-plugin-snapshots": "^2.4",
         "symfony/var-dumper": "^5.3|^6.0|^7.0|^8.0"
     },
     "config": {
@@ -41,7 +41,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest",
+        "test": "vendor/bin/pest --no-coverage",
         "test-coverage": "vendor/bin/pest --coverage-html coverage"
     }
 }

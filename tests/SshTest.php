@@ -81,9 +81,9 @@ test('zero is a valid port number', function () {
     assertMatchesSnapshot($command);
 });
 
-it('throws an exception if a port is negative')
-    ->tap(fn () => (new Ssh('user', 'example.com'))->usePort(-45)->getExecuteCommand('whoami'))
-    ->throws(Exception::class, 'Port must be a positive integer.');
+it('throws an exception if a port is negative', function () {
+    (new Ssh('user', 'example.com'))->usePort(-45)->getExecuteCommand('whoami');
+})->throws(Exception::class, 'Port must be a positive integer.');
 
 it('can download a file', function () {
     $command = $this->ssh->getDownloadCommand('spatie.be/current/.env', '.env');
